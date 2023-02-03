@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite" 
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      >
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title><ui:insert name="titulo">#{msg.system_name}</ui:insert></title>
+        <h:outputStylesheet library="css" name="estilo.css" />
+        <style type="text/css">
+
+
+        </style>
+    </h:head>
+    <h:body>
+        
+        <div id="container">
+
+            
+            
+            <div id="logotipo">
+                <h:graphicImage library="imagens" name="Tecnocoli_logo_3.png"/>
+            </div>
+            <div id="titulo">
+                <ui:insert name="titulo">#{msg.systemName}</ui:insert>
+            </div>
+            <div id="div_idiomas">
+                <h:form id="idiomas1">
+                    <h:commandLink
+                        action="#{contextBean.setLocale('pt_BR')}" >
+                        <h:graphicImage library="imagens" width="35"
+                                        name="bandeira_pt_BR.png"
+                                        style="border:10" /> 
+                    </h:commandLink>
+                    <h:commandLink
+                        action="#{contextBean.setLocale('en_US')}" >
+                        <h:graphicImage library="imagens" width="35"
+                                        name="bandeira_en_US.png"
+                                        style="border:10"  /> 
+                    </h:commandLink>
+                    <h:commandLink
+                        action="#{contextBean.setLocale('es_ES')}" >
+                        <h:graphicImage library="imagens" width="35"
+                                        name="bandeira_es_ES.png"
+                                        style="border:10" /> 
+                    </h:commandLink>
+                    <p:idleMonitor timeout="1620000">
+                        <p:ajax
+                            event="idle"
+
+                            oncomplete="PF('idleDialog').show()" /> 
+                    </p:idleMonitor>
+
+                    <p:dialog
+                        header="#{msg.sessionTimeLimit}"
+                        widgetVar="idleDialog"
+                        modal="true"
+                        fixedCenter="true"
+                        closable="false"
+                        draggable="false"
+                        resizable="false"
+                        appendToBody="true"
+                        height="80"
+                        width="200">
+                        <h:panelGrid columns="1" cellpadding="5">
+
+                            <h:outputLabel value="#{msg.clickToRelog}" />
+
+                            <h:outputLink value="javascript:void(0)"
+                                          onclick="document.location = '#{request.contextPath}/j_spring_security_logout'"
+                                          title="Logout">
+                                <h:graphicImage library="imagens" name="OK.png" />
+                            </h:outputLink>
+
+
+                        </h:panelGrid>
+
+
+                    </p:dialog>
+
+                </h:form>
+            </div>
+
+            <div id="barra_menu">
+                <ui:insert name="barra_menu">
+                    <ui:include src="/restrict/system_menu.xhtml"/>
+                </ui:insert>   
+            </div>
+            <div id="body">
+                <ui:insert name="body"/>    
+            </div>
+            <div id="footer">
+                <ui:insert name="footer">
+                    <ui:include src="/public/footer.xhtml"/>
+                </ui:insert> 
+            </div>
+        </div>
+    </h:body>
+</html>

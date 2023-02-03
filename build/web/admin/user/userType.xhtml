@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:sec="http://www.springframework.org/security/facelets/tags">
+
+<ui:composition template="/templates/principal.xhtml">
+	<ui:define name="titulo">
+		Cadastro de Categoria de Users
+	</ui:define>
+
+
+	<ui:define name="body">
+
+
+		<p:messages id="messages" showDetail="true" autoUpdate="true"
+			closable="true" />
+		<h:form id="cadastro">
+			<p:panel header="Tipos de User">
+				<h:inputHidden value="#{userTypeBean.userType.id}"/>
+				<h:panelGrid id="grid" columns="3" cellpadding="3">
+					<h:outputText value="Descri��o: *" />
+					<p:inputText id="descricao" label="descri��o"
+						value="#{userTypeBean.userType.description}" required="true"
+						validatorMessage="Tamanho minimo 5 caracteres e somente os especiais . - _">
+						<f:validateRegex
+							pattern="(([a-z]|[A-Z]|[0-9]|[.]|[_]|[-]).{5,20})" />
+					</p:inputText>
+					<p:message for="descricao" />
+
+				</h:panelGrid>
+				<p:commandButton action="#{userTypeBean.save}" value="Salvar" update=":listTipoUser:listtipo, cadastro" />
+				<p:commandButton action="#{userTypeBean.cancel}" update=":listTipoUser:listtipo, cadastro"
+					value="Cancelar" immediate="true"/>
+
+
+			</p:panel>
+		</h:form>
+
+		<h:form id="listTipoUser">
+			<p:contextMenu for="listtipo">
+				<p:menuitem value="Apagar" update="delete, :cadastro"
+					icon="ui-icon-pencil" oncomplete="PF('deleteDialog').show()" />
+				<p:menuitem value="Editar" update=":cadastro" icon="ui-icon-pencil"
+					action="#{userTypeBean.edit}" />
+			</p:contextMenu>
+
+			<p:dataTable scrollHeight="550" scrollRows="20" scrollable="false"
+				overflow="hidden" selection="#{userTypeBean.selTipoUser}"
+				id="listtipo" paginator="true" rows="20" selectionMode="single"
+				rowKey="#{userType.id}"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				value="#{userTypeBean.listType}" var="userType" rules="rows">
+				<f:facet name="header">Listagem de Categoria de Usurio</f:facet>
+
+				<p:column headerText="Codigo">
+					<h:outputText value="#{userType.id}" />
+				</p:column>
+				<p:column headerText="Descri��o">
+                                    <h:outputText value="#{userType.description}" />
+				</p:column>
+			</p:dataTable>
+
+			
+			<!--*********** END DELETE Dialog Box ***********-->
+		</h:form>
+
+
+	</ui:define>
+</ui:composition>
+</html>

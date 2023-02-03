@@ -1,0 +1,6 @@
+<p:pieChart  value="#{principalBean.listProp}" style="width:100px;height:100px" 
+                                 var="prop" categoryField="#{prop.nome}" dataField="#{prop.valor}"/>
+
+<p:pieChart  model="#{principalBean.pieModel1}" style="width:100px;height:100px" />
+
+<p:poll interval="3" update="pie1, pie2, pie3, pie4" />

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite">
+<h:head>
+	<title>Enviando E-Mail via Google Gmail livro Java Para Web - Novatec</title>
+</h:head>
+<h:body>
+	<h:form id="formulario">
+		<h:messages />
+		<h:panelGrid columns="2">
+			<f:facet name="header"><h:outputText value="Enviando E-Mail via Gmail" />	</f:facet>
+			<h:outputText value="De:" />
+			<h:inputText value="#{tecnoMailBean.de}" id="de" required="true" />
+			<h:outputText value="Para:" />
+			<h:inputText value="#{tecnoMailBean.para}" id="para" required="true" />
+			<h:outputText value="Assunto:" />
+			<h:inputText value="#{tecnoMailBean.assunto}" id="assunto"	required="true" />
+			<h:outputText value="Mensagem:" />
+			<h:inputTextarea rows="10" cols="30" value="#{tecnoMailBean.mensagem}" 	id="mensagem" required="true" />
+		</h:panelGrid>
+		<h:commandButton action="#{tecnoMailBean.enviarEmail}" value="Enviar" />
+	</h:form>
+</h:body>
+</html>

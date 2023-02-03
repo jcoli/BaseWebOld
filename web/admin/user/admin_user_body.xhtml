@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:sec="http://www.springframework.org/security/facelets/tags">
+
+    <ui:composition>
+        <f:view> <f:event type="preRenderView" listener="#{contextBean.getLocale}"/></f:view>
+        
+
+        <h:form id="listUsers">
+            <p:contextMenu for="users">
+                
+                <p:menuitem value="#{msg.details}" update="display" icon="ui-icon-search"
+                            oncomplete="PF('userDialog').show()" />
+                <sec:ifAnyGranted roles="ROLE_SUPER">
+                <p:menuitem value="#{msg.delete}" update="delete, users" icon="ui-icon-pencil"
+                            oncomplete="PF('deleteDialog').show()" />
+                <p:menuitem value="#{msg.edit}" update="users" icon="ui-icon-pencil"	action="#{userBean.userEditAdm()}"/>	
+                <p:menuitem value="#{msg.password}" update="users" icon="ui-icon-pencil" action="#{userBean.userPasswordAdm()}"/>	
+                </sec:ifAnyGranted>
+            </p:contextMenu>
+
+            <h:messages />
+            
+            <h:outputText value="#{contextBean.locale}" />
+            
+            <p:dataTable scrollHeight="550" scrollRows="20" scrollable="false"
+                         overflow="hidden" selection="#{userBean.selUser}" id="users"
+                         paginator="true" rows="20" selectionMode="single"
+                         rowKey="#{user.id}"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         value="#{userBean.list}" var="user" rules="rows">
+
+                <f:facet name="header">#{msg.userList}</f:facet>
+
+                <p:column headerText="#{msg.active}">
+                    <sec:ifAnyGranted roles="ROLE_SUPER">
+                        <h:commandLink action="#{userBean.ativar()}">
+                            <h:graphicImage library="imagens"
+                                            name="user_active_#{user.active}.png" style="border:0" />
+                            <f:setPropertyActionListener target="#{userBean.user}"
+                                                         value="#{user}" />
+                        </h:commandLink>
+                    </sec:ifAnyGranted>   
+                </p:column>
+
+                <p:column headerText="#{msg.name}" width="200">
+                    <h:outputText value="#{user.name}" />
+                </p:column>
+                <p:column headerText="#{msg.area}">
+                    <h:outputText value="#{user.area}" />
+                </p:column>
+                <p:column headerText="#{msg.type}">
+                    <h:outputText value="#{user.userType.description}" />
+                </p:column>
+                
+                <p:column headerText="#{msg.language}">
+                    <h:outputText value="#{user.language}" />
+                </p:column>
+                
+                <p:column headerText="#{msg.administrator}" width="100">
+                    <sec:ifAnyGranted roles="ROLE_SUPER">
+                        <h:commandLink
+                            action="#{userBean.atribuiPermissao(user, 'ROLE_ADMINISTRADOR')}"
+                            title="#{msg.permission} #{msg.administrator}">
+                            <h:graphicImage library="imagens"
+                                            name="user_active_#{user.role.contains('ROLE_ADMINISTRADOR')}.png"
+                                            style="border:3" />
+                        </h:commandLink>
+                    </sec:ifAnyGranted>   
+                </p:column>
+                
+                <p:column headerText="#{msg.advanced}">
+                    <sec:ifAnyGranted roles="ROLE_SUPER">
+                        <h:commandLink
+                            action="#{userBean.atribuiPermissao(user, 'ROLE_AVANCADO')}"
+                            title="#{msg.permission} #{msg.advanced}">
+                            <h:graphicImage library="imagens"
+                                            name="user_active_#{user.role.contains('ROLE_AVANCADO')}.png"
+                                            style="border:0" />
+                        </h:commandLink>
+                    </sec:ifAnyGranted>   
+                </p:column>
+                <p:column headerText="#{msg.superUser}">
+                    <sec:ifAnyGranted roles="ROLE_SUPER">
+                        <h:commandLink
+                            action="#{userBean.atribuiPermissao(user, 'ROLE_SUPER')}"
+                            title="#{msg.permission} #{msg.superUser}">
+                            <h:graphicImage library="imagens" 
+                                            name="user_active_#{user.role.contains('ROLE_SUPER')}.png"
+                                            style="border:0" />
+                        </h:commandLink>
+                    </sec:ifAnyGranted>   
+                </p:column>
+                <p:column headerText="#{msg.manager}">
+                    <sec:ifAnyGranted roles="ROLE_GEREN">
+                        <h:commandLink 
+                             action="#{userBean.atribuiPermissao(user, 'ROLE_GEREN')}"
+                            title="#{msg.permission} #{msg.manager}">
+                            <h:graphicImage library="imagens" 
+                                            name="user_active_#{user.role.contains('ROLE_GEREN')}.png"
+                                            style="border:0" />
+                        </h:commandLink>
+                    </sec:ifAnyGranted>   
+                </p:column>
+
+            </p:dataTable>
+
+            <p:dialog header="Detalhe User" widgetVar="userDialog"
+                      resizable="false" width="300" showEffect="clip" hideEffect="fold"
+                      id="dialog" modal="true">
+
+                <h:panelGrid id="display" columns="2" cellpadding="4">
+
+                    <h:outputText value="#{msg.name}: " />
+                    <h:outputText value="#{userBean.selUser.name}" style="font-weight:bold" />
+
+                    <h:outputText value="#{msg.login}: " />
+                    <h:outputText value="#{userBean.selUser.login}" style="font-weight:bold" />
+
+                    <h:outputText value="#{msg.email}: " />
+                    <h:outputText value="#{userBean.selUser.email}" style="font-weight:bold" />
+
+                    <h:outputText value="#{msg.mobile}: " />
+                    <h:outputText value="#{userBean.selUser.cellphone}" style="font-weight:bold" />
+
+                    <h:outputText value="#{msg.function}: " />
+                    <h:outputText value="#{userBean.selUser.function}" style="font-weight:bold" />
+
+                    <h:outputText value="#{msg.area}: " />
+                    <h:outputText value="#{userBean.selUser.area}" style="font-weight:bold" />
+
+                    <h:outputText value="#{msg.type}: " />
+                    <h:outputText value="#{userBean.selUser.userType.description}" style="font-weight:bold" />
+
+
+                    
+                </h:panelGrid>
+            </p:dialog>
+            <!--*********** BEGIN EDIT Dialog Box ***********-->
+            <p:confirmDialog
+                message="Voc� realmente deseja excluir o user #{userBean.selUser.name}?"
+                header="Excluir User" severity="alert" widgetVar="deleteDialog" id="delete" modal="true">
+                <p:commandButton id="confirm" value="Sim "
+                                 oncomplete="deleteDialog.hide()" update="users, delete"
+                                 setPropertyAction="#{userBean.selUser}"
+                                 action="#{userBean.excluir}"
+                                 />
+                <p:commandButton id="decline" value="N�o"
+                                 onclick="deleteDialog.hide()" type="button" />
+            </p:confirmDialog>
+            <!--*********** END DELETE Dialog Box ***********-->
+        </h:form>
+
+    </ui:composition>
+
+</html>

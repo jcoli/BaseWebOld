@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="sub_projeto_analitico" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="842" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="1768eb90-aa12-445e-8b6e-148eb870f4a1">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="style1" forecolor="#000000">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean($V{Saldo}<0.00)]]></conditionExpression>
+			<style forecolor="#FF0000"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="par_projetoid" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[SELECT
+     report_projeto_budget."pid" AS report_projeto_budget_pid,
+     report_projeto_budget."despesa" AS report_projeto_budget_despesa,
+     report_projeto_budget."budget" AS report_projeto_budget_budget,
+     report_projeto_budget."conta" AS report_projeto_budget_conta,
+     report_projeto_budget."responsavel" AS report_projeto_budget_responsavel,
+     report_projeto_budget."cliente" AS report_projeto_budget_cliente,
+     report_projeto_budget."planta" AS report_projeto_budget_planta,
+     report_projeto_budget."descricao" AS report_projeto_budget_descricao,
+     report_projeto_budget."horasbudget" AS report_projeto_budget_horasbudget,
+     report_projeto_budget."totalhoras" AS report_projeto_budget_totalhoras
+FROM
+     "public"."report_projeto_budget" report_projeto_budget
+WHERE
+     report_projeto_budget."pid" = $P{par_projetoid}]]>
+	</queryString>
+	<field name="report_projeto_budget_pid" class="java.lang.Integer"/>
+	<field name="report_projeto_budget_despesa" class="java.lang.Float"/>
+	<field name="report_projeto_budget_budget" class="java.lang.Float"/>
+	<field name="report_projeto_budget_conta" class="java.lang.String"/>
+	<field name="report_projeto_budget_responsavel" class="java.lang.String"/>
+	<field name="report_projeto_budget_cliente" class="java.lang.String"/>
+	<field name="report_projeto_budget_planta" class="java.lang.String"/>
+	<field name="report_projeto_budget_descricao" class="java.lang.String"/>
+	<field name="report_projeto_budget_horasbudget" class="java.lang.Float"/>
+	<field name="report_projeto_budget_totalhoras" class="java.lang.Float"/>
+	<variable name="Saldo" class="java.lang.Float">
+		<variableExpression><![CDATA[$F{report_projeto_budget_budget}+$F{report_projeto_budget_despesa}]]></variableExpression>
+	</variable>
+	<group name="report_projeto_budget_pid">
+		<groupExpression><![CDATA[$F{report_projeto_budget_pid}]]></groupExpression>
+	</group>
+	<group name="report_projeto_budget_conta">
+		<groupExpression><![CDATA[$F{report_projeto_budget_conta}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="22" splitType="Stretch">
+			<staticText>
+				<reportElement x="10" y="0" width="100" height="20" uuid="6f78a524-37c1-4062-a2dd-84c13c1e12d3"/>
+				<text><![CDATA[Conta]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="449" y="0" width="45" height="17" uuid="c5081adf-0ca8-431d-b9bc-a0eeaf4d08c2"/>
+				<text><![CDATA[Budget]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="573" y="0" width="57" height="17" uuid="deced7cb-29ef-44bb-8f34-1a0e0f5ad338"/>
+				<text><![CDATA[Despesa]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="716" y="0" width="42" height="20" uuid="698efd6b-54d5-496a-a5cc-e0a65d35d127"/>
+				<text><![CDATA[Saldo]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<textField>
+				<reportElement x="10" y="0" width="258" height="11" forecolor="#000000" backcolor="#FFFFFF" uuid="d9f2d8ba-e864-4c09-b236-edcefc0c340d"/>
+				<textElement>
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{report_projeto_budget_conta}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="279" y="0" width="100" height="11" uuid="9c199880-fba6-4bc2-bdf4-fabd87a2cfa0"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{report_projeto_budget_pid}]]></textFieldExpression>
+			</textField>
+			<textField pattern="R¤ #,##0.00">
+				<reportElement x="394" y="0" width="100" height="11" uuid="10219315-fe28-40e3-99b3-03c484e04ead"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{report_projeto_budget_budget}]]></textFieldExpression>
+			</textField>
+			<textField pattern="R¤ #,##0.00">
+				<reportElement x="530" y="0" width="100" height="11" uuid="7d18eefd-9623-40fd-964c-309011aec3a8"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{report_projeto_budget_despesa}]]></textFieldExpression>
+			</textField>
+			<textField pattern="R¤ #,##0.00" isBlankWhenNull="true">
+				<reportElement style="style1" x="658" y="0" width="100" height="11" uuid="a5b6ba48-3a37-49bf-b4db-09842731d918"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{Saldo}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

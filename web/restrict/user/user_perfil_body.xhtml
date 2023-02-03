@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:sec="http://www.springframework.org/security/facelets/tags">
+
+    <ui:composition>
+
+
+
+        <h:form id="cadastro">
+            <p:panel header="#{msg.UserData} #{userBean.user.name}">
+                <p:messages id="messages" showDetail="false" autoUpdate="true" closable="true" /> 
+                <h:inputHidden value="#{userBean.user.id}" />
+                <h:inputHidden value="#{userBean.user.active}" />
+                <h:inputHidden value="#{userBean.user.password}" />
+                <h:inputHidden value="#{userBean.user.login}" />
+                <h:inputHidden value="#{userBean.user.language}" />
+                <h:inputHidden value="#{userBean.destinoSalvar}" />
+                <h:inputHidden value="#{userBean.passwordCriptografada}" />
+                <h:inputHidden value="#{userBean.source}" />
+
+                <h:panelGrid id="grid" columns="4" cellpadding="3">
+                    <h:outputLabel value="#{msg.name}: *" for="name" />
+                    <p:inputText id="name" label="Nome"
+                                 value="#{userBean.user.name}" size="30" maxlength="30"
+                                 required="true" validatorMessage="#{msg.invalid} #{msg.name}"
+                                 requiredMessage="#{msg.name} #{msg.requiredField}" >
+                        <f:validateLength minimum="10" maximum="30" />
+                    </p:inputText>
+                    <p:watermark for="name" value="#{msg.name}"  />
+                    <p:message for="name" />
+
+                    <h:outputLabel value="#{msg.email}: *" for="email" />
+                    <p:inputText id="email" label="#{msg.email}"
+                                 value="#{userBean.user.email}" size="50" maxlength="50"
+                                 required="true" validatorMessage="#{msg.invalid} #{msg.email}" requiredMessage="#{msg.email} #{msg.requiredField}">
+                        <f:validateRegex pattern="([a-zA-Z0-9\-\_\.]+@[a-zA-Z0-9\-\_\.]+)" />
+                    </p:inputText>
+                    <p:watermark for="email" value="#{msg.email}"  />
+                    <p:message for="email"  />
+
+                    <h:outputLabel value="#{msg.mobile}:" for="celular" />
+                    <p:inputMask id="celular" label="#{msg.mobile}" validatorMessage="#{msg.invalid} #{msg.mobile}"
+                                 value="#{userBean.user.cellphone}" mask="(99) 99999999?9" />
+                    <p:watermark for="celular" value="#{msg.mobile}"  />
+                    <p:message for="celular" />
+
+                
+
+                    
+                    <h:outputLabel value="#{msg.area}: *" for="area" />
+                    <p:selectOneMenu value="#{userBean.user.area}"  label="#{userBean.user.area}"
+                                     id="area" required="true" requiredMessage="#{msg.area} #{msg.required}" >
+                        <f:selectItem itemLabel="#{msg.engineering}" itemValue="engineering" />
+                        <f:selectItem itemLabel="#{msg.commercial}" itemValue="commercial" />
+                        <f:selectItem itemLabel="#{msg.administrative}" itemValue="administrative" />
+                        
+                    </p:selectOneMenu>
+                    <p:watermark for="area" value="#{msg.area}"  />
+                    <p:message for="area" />
+                    
+                    
+                     <h:outputText value="#{msg.type}: *" />  
+                    <p:selectOneMenu value="#{userBean.user.userType}" id="tipo" label="#{msg.type}" required="false" requiredMessage="#{msg.type} #{msg.requiredField}" >
+                        <f:selectItem itemLabel="#{userBean.user.userType}" itemValue="#{userBean.user.userType}" />  
+                        <f:selectItems  value="#{tipoUserBean.listTipo}"  />  
+                    </p:selectOneMenu>  
+                     <p:watermark for="celular" value="#{msg.type}"  />
+                    <p:message for="tipo" />
+
+                    
+                    <h:outputText value="#{msg.language}: *" />  
+                    <p:selectOneMenu value="#{userBean.user.language}" id="language" label="#{msg.language}" required="true" 
+                                     requiredMessage="#{msg.language} #{msg.requiredField}" >
+                        <f:selectItem itemLabel="#{userBean.user.language}" itemValue="#{userBean.user.language}" /> 
+                        <f:selectItem itemLabel="Português Brasil" itemValue="pt_BR" />
+                        <f:selectItem itemLabel="English" itemValue="en_US" />
+                        <f:selectItem itemLabel="Espanhol" itemValue="es_ES" />
+                        
+                    </p:selectOneMenu>  
+                    <p:watermark for="celular" value="#{msg.language}"  />
+                    <p:message for="language" />
+                   
+
+
+
+                </h:panelGrid>   
+                
+
+
+                <p:commandButton action="#{userBean.savePerfil(userBean.source)}" value="#{msg.save}" />
+                <p:commandButton action="#{userBean.cancel}" value="#{msg.cancel}" immediate="true"/>
+            </p:panel>
+        </h:form>
+
+
+
+    </ui:composition>
+</html>

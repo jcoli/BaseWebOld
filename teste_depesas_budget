@@ -1,0 +1,21 @@
+﻿SELECT p.id,
+    p.numero,
+    budget.valor_budget,
+    despesa.valor_despesa,
+    budget.tipomaterial,
+    budget.tipobudget,
+    despesa.conta_financeira
+   FROM projeto p
+   LEFT JOIN ( SELECT dp.projeto_id,
+            dp.conta_financeira,
+             COALESCE(sum(dp.realizado + dp.previsto), 0) AS valor_despesa
+           FROM despesa_financeiro dp
+          GROUP BY dp.projeto_id, dp.conta_financeira) despesa ON p.id = despesa.projeto_id
+     LEFT JOIN ( SELECT bd.projeto_id,
+            bd.tipomaterial,
+            bd.tipobudget,
+            COALESCE(sum(bd.valor), 0.00) AS valor_budget
+           FROM budget_financeiro bd
+          GROUP BY bd.projeto_id, bd.tipomaterial, bd.tipobudget) budget ON p.id = budget.projeto_id
+    
+          

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmxmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:sec="http://www.springframework.org/security/facelets/tags">
+
+    <ui:composition>
+       
+
+        <sec:ifAnyGranted roles="ROLE_USUARIO">
+            <h:form id="menuSistema">
+                <p:menubar autoDisplay="false">
+
+                    <p:submenu label="#{msg.main_menu}" icon="ui-icon-home">
+                        <p:menuitem value="#{msg.home_screen}" url="/restrict/principal.jsf"
+                                    icon="ui-icon-home" />
+
+                    </p:submenu>
+
+
+                    <sec:ifAnyGranted roles="ROLE_ADMINISTRADOR">
+                        <p:submenu label="#{msg.administration}" icon="ui-icon-gear">
+                            <p:submenu label="#{msg.users}" icon="ui-icon-document">
+                                <p:menuitem value="#{msg.news}" url="/admin/user/user.jsf"
+                                            icon="ui-icon-document" />
+                                <p:menuitem value="#{msg.administration}" url="/admin/user/admin_user.jsf"
+                                            icon="ui-icon-document" />
+
+                            </p:submenu>
+                            <p:menuitem value="#{msg.user_types}" url="/admin/user/userType.jsf"
+                                        icon="ui-icon-document" />
+                            <p:menuitem value="#{msg.list_parameters}" action="#{paramBean.editParam()}" 
+                                        icon="ui-icon-document" />
+                            <p:menuitem value="#{msg.list_parameters_type}" action="#{paramBean.editParamType()}" 
+                                        icon="ui-icon-document" />
+                            <p:menuitem value="#{msg.global_parameters}" action="#{globalBean.editParam()}" 
+                                        icon="ui-icon-document" />
+                            <p:menuitem value="#{msg.holidays}" action="#{paramBean.editHoliday()}" 
+                                        icon="ui-icon-document" />
+
+                        </p:submenu>
+
+                    </sec:ifAnyGranted>
+
+                    <sec:ifAnyGranted roles="ROLE_USUARIO">
+                        <p:submenu label="#{msg.users_area}" icon="ui-icon-gear">
+                            <sec:ifAnyGranted roles="ROLE_DEVELOP">
+                                <p:menuitem value="#{msg.profile}"
+                                            action="#{userBean.userEdit()}" icon="ui-icon-document" />
+                                <p:menuitem value="#{msg.password}"
+                                            action="#{userBean.userPassword()}" icon="ui-icon-document" />
+                            </sec:ifAnyGranted>
+
+                        </p:submenu>
+                    </sec:ifAnyGranted>
+
+                    <sec:ifAnyGranted roles="ROLE_DEVELOP">
+                        <p:submenu label="#{msg.development}" icon="ui-icon-gear">
+                            <p:menuitem value="#{msg.development}"
+                                        url="/restrict/email/javamail.jsf" icon="ui-icon-document" />
+                            <p:menuitem value="#{msg.development}"
+                                        url="/restrict/email/tecnoMail.jsf" icon="ui-icon-document" />
+                        </p:submenu>
+                    </sec:ifAnyGranted>
+
+
+
+
+                    <f:facet name="options">
+
+
+
+
+                        <p:outputLabel style="margin-right:10px" value="#{msg.user}" />
+
+                        <p:outputLabel style="margin-right:10px"
+                                       value="#{contextBean.loggedUser.name}" />	
+                        <h:outputLink value="javascript:void(0)"
+                                      onclick="document.location = '#{request.contextPath}/j_spring_security_logout'"
+                                      title="Logout">
+                            <h:graphicImage library="imagens" name="logout16.png" />
+                        </h:outputLink>
+                        
+                    </f:facet>
+
+
+                </p:menubar>
+
+
+            </h:form>
+        </sec:ifAnyGranted>
+    </ui:composition>
+</html>

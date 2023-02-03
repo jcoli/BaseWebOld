@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report2" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8eea3522-13b0-4d27-b41d-780975a24e4f">
+	<queryString language="SQL">
+		<![CDATA[SELECT
+     projetos_budget_despesas2."pid" AS projetos_budget_despesas2_pid,
+     projetos_budget_despesas2."despesa" AS projetos_budget_despesas2_despesa,
+     projetos_budget_despesas2."budget" AS projetos_budget_despesas2_budget,
+     projetos_budget_despesas2."conta" AS projetos_budget_despesas2_conta
+FROM
+     "public"."projetos_budget_despesas2" projetos_budget_despesas2]]>
+	</queryString>
+	<field name="projetos_budget_despesas2_pid" class="java.lang.Integer"/>
+	<field name="projetos_budget_despesas2_despesa" class="java.lang.Float"/>
+	<field name="projetos_budget_despesas2_budget" class="java.lang.Float"/>
+	<field name="projetos_budget_despesas2_conta" class="java.lang.String"/>
+	<group name="projetos_budget_despesas2_pid">
+		<groupExpression><![CDATA[$F{projetos_budget_despesas2_pid}]]></groupExpression>
+	</group>
+	<group name="projetos_budget_despesas2_conta">
+		<groupExpression><![CDATA[$F{projetos_budget_despesas2_conta}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

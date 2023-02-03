@@ -1,0 +1,491 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="proposta_resp" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="18af9242-c334-4d8e-8198-eced21544af6">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="saldo_budget" forecolor="#000000">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean($F{projeto_responsavel_projeto_saldo}<0.00)]]></conditionExpression>
+			<style forecolor="#FF0000"/>
+		</conditionalStyle>
+	</style>
+	<style name="saldo_horas" forecolor="#000000">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean($F{projeto_responsavel_projeto_saldohoras}<0.00)]]></conditionExpression>
+			<style forecolor="#FF0000"/>
+		</conditionalStyle>
+	</style>
+	<style name="saldo_budget_parcial" forecolor="#000000">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean($V{sum_saldo}<0.00)]]></conditionExpression>
+			<style forecolor="#FF0000"/>
+		</conditionalStyle>
+	</style>
+	<style name="saldo_budget_total" forecolor="#000000">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean($V{sum_saldo_total}<0.00)]]></conditionExpression>
+			<style forecolor="#FF0000"/>
+		</conditionalStyle>
+	</style>
+	<queryString>
+		<![CDATA[SELECT numero, valor_budget, valor_despesa, conta FROM
+(
+(SELECT
+    p.numero as numero,
+    0.00 as valor_budget,
+    COALESCE(despesa.valor_despesa, 0::real) AS valor_despesa,
+    despesa.conta as conta
+   FROM projeto p
+     INNER JOIN ( SELECT dp.projeto_id as id,
+            dp.conta_financeira as conta,
+            sum(dp.realizado + dp.previsto) AS valor_despesa,
+            0.00 as valor_budget
+           FROM despesa_financeiro dp
+          GROUP BY dp.projeto_id, dp.conta_financeira) despesa ON p.id = despesa.id
+     INNER JOIN ( SELECT tcf.descricao
+           FROM table_conta_financeira tcf
+          GROUP BY tcf.descricao) cta ON despesa.conta = cta.descricao )
+
+          UNION ALL
+
+          (SELECT
+    p.numero as numero,
+    COALESCE(budget.valor_budget::real, 0::real) AS valor_budget,
+    0.00 as valor_despesa,
+    budget.conta as conta
+   FROM projeto p
+     INNER JOIN ( SELECT bd.projeto_id as id,
+            bd.tipomaterial as conta,
+            0.00 AS valor_despesa,
+            sum(bd.valor) AS valor_budget
+           FROM budget bd
+          GROUP BY bd.projeto_id, bd.tipomaterial) budget ON p.id = budget.id
+     INNER JOIN ( SELECT tcf.descricao
+           FROM table_conta_financeira tcf
+          GROUP BY tcf.descricao) cta ON budget.conta = cta.descricao
+  )
+) ss
+ORDER by numero]]>
+	</queryString>
+	<field name="numero" class="java.lang.String"/>
+	<field name="valor_budget" class="java.lang.Float"/>
+	<field name="valor_despesa" class="java.lang.Float"/>
+	<field name="conta" class="java.lang.String"/>
+	<variable name="sum_budget" class="java.lang.Number" resetType="Group" resetGroup="projeto_responsavel_user_nome" calculation="Sum">
+		<variableExpression><![CDATA[$F{projeto_responsavel_projeto_valorbudget}]]></variableExpression>
+	</variable>
+	<variable name="sum_budget_total" class="java.lang.Number" calculation="Sum">
+		<variableExpression><![CDATA[$F{projeto_responsavel_projeto_valorbudget}]]></variableExpression>
+	</variable>
+	<variable name="count_prop_total" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{projeto_responsavel_projeto_numero}]]></variableExpression>
+	</variable>
+	<variable name="projeto_responsavel_user_nome_1" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{projeto_responsavel_user_nome}]]></variableExpression>
+	</variable>
+	<variable name="sum_despesa_total" class="java.lang.Number" calculation="Sum">
+		<variableExpression><![CDATA[$F{projeto_responsavel_projeto_valordespesas}]]></variableExpression>
+	</variable>
+	<variable name="sum_despesas" class="java.lang.Number" resetType="Group" resetGroup="projeto_responsavel_user_nome" calculation="Sum">
+		<variableExpression><![CDATA[$F{projeto_responsavel_projeto_valordespesas}]]></variableExpression>
+	</variable>
+	<variable name="sum_saldo" class="java.lang.Number" resetType="Group" resetGroup="projeto_responsavel_user_nome" calculation="Sum">
+		<variableExpression><![CDATA[$F{projeto_responsavel_projeto_saldo}]]></variableExpression>
+	</variable>
+	<variable name="sum_saldo_total" class="java.lang.Number" calculation="Sum">
+		<variableExpression><![CDATA[$F{projeto_responsavel_projeto_saldo}]]></variableExpression>
+	</variable>
+	<variable name="count_prop" class="java.lang.Integer" resetType="Group" resetGroup="projeto_responsavel_user_nome" calculation="Count">
+		<variableExpression><![CDATA[$F{projeto_responsavel_projeto_numero}]]></variableExpression>
+	</variable>
+	<variable name="variable1" class="java.lang.String" calculation="Sum"/>
+	<group name="projeto_responsavel_user_nome">
+		<groupExpression><![CDATA[$F{projeto_responsavel_user_nome}]]></groupExpression>
+		<groupHeader>
+			<band height="79">
+				<rectangle radius="10">
+					<reportElement x="1" y="1" width="799" height="75" uuid="4a348222-ef44-4689-9438-f0f45de11705"/>
+				</rectangle>
+				<staticText>
+					<reportElement x="12" y="5" width="100" height="15" uuid="3328beb9-383d-414b-b59c-fecaf91ee87b"/>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+					<text><![CDATA[Responsável:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="12" y="22" width="100" height="15" uuid="2394a636-a05c-49d7-af13-602c56818da4"/>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+					<text><![CDATA[Numero:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="133" y="22" width="100" height="15" uuid="1b668ad4-a3bc-4423-92a4-fbeaf1f4f6f2"/>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+					<text><![CDATA[Cliente]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="297" y="22" width="100" height="15" uuid="2857f968-49a7-42b9-ad47-47a88079b8a4"/>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+					<text><![CDATA[Planta]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="407" y="22" width="100" height="15" uuid="1c723bec-b6fb-4e21-850a-6b3eef4370d5"/>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+					<text><![CDATA[Budget]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="12" y="40" width="100" height="15" uuid="0aab2b9e-62e7-4505-9b0f-59033afefb2b"/>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+					<text><![CDATA[Descrição]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="133" y="5" width="100" height="15" uuid="570b2a12-f560-4986-8cb3-eb5dba6525a0"/>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{projeto_responsavel_user_nome}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="519" y="22" width="100" height="15" uuid="3fc378b0-d76f-4c66-bef0-6b0f4b65fe59"/>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+					<text><![CDATA[Despesas]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="643" y="22" width="100" height="15" uuid="4dabd8b6-359a-4da0-b34a-bb5d270252e8"/>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+					<text><![CDATA[Saldo]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="12" y="58" width="100" height="15" uuid="a877560e-9aac-4324-82cc-cb4d62d064ea"/>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+					<text><![CDATA[Status]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="408" y="43" width="100" height="15" uuid="c4769c5a-cbd1-448b-a2cd-fc4c71550566"/>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+					<text><![CDATA[Horas Budget]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="519" y="43" width="100" height="15" uuid="e09e4078-471f-4865-a286-655d3eea9bc6"/>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+					<text><![CDATA[Horas Reais]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="643" y="43" width="100" height="15" uuid="444db256-8e76-434d-8c90-c5c86a3a370b"/>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+					<text><![CDATA[Saldo]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="41">
+				<rectangle radius="10">
+					<reportElement x="0" y="4" width="798" height="28" uuid="faa2296e-ae25-4d62-8615-f70deadf4e37"/>
+				</rectangle>
+				<staticText>
+					<reportElement x="12" y="7" width="161" height="15" uuid="e445cf64-e2b8-4fbb-ad67-fc5666cd5ff5"/>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+					<text><![CDATA[Totais de projetos do responsável]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="174" y="7" width="123" height="15" uuid="db902b53-7ba7-4385-a33a-b2d49161e6e4"/>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{projeto_responsavel_user_nome}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="0" y="32" width="802" height="2" uuid="04e04e61-d699-43fa-be52-49f610cc162f"/>
+				</line>
+				<line>
+					<reportElement x="0" y="35" width="802" height="2" uuid="e8ccd665-5c47-4a9d-8bc8-ccad3f79173e"/>
+				</line>
+				<staticText>
+					<reportElement x="327" y="7" width="80" height="15" uuid="0ddcec7e-1172-4d58-9eee-a9f8694e867d"/>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+					<text><![CDATA[projetos, budget]]></text>
+				</staticText>
+				<textField pattern="R¤ #,##0.00" isBlankWhenNull="true">
+					<reportElement x="407" y="7" width="99" height="15" uuid="a33c49e0-990d-4a3f-a2ba-7e9ba42c0081"/>
+					<textElement textAlignment="Right">
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sum_budget}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="506" y="7" width="52" height="15" uuid="55cfdb35-9592-4650-b326-1d59289868af"/>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+					<text><![CDATA[, despesas]]></text>
+				</staticText>
+				<textField pattern="R¤ #,##0.00" isBlankWhenNull="true">
+					<reportElement x="558" y="7" width="100" height="15" uuid="8176fba6-ea13-4f04-8fd8-624ded63e7d1"/>
+					<textElement textAlignment="Right">
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sum_despesas}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="658" y="7" width="41" height="15" uuid="7d1088b6-6c9c-4f01-854d-666cdb512fe2"/>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+					<text><![CDATA[, saldo]]></text>
+				</staticText>
+				<textField pattern="R¤ #,##0.00" isBlankWhenNull="true">
+					<reportElement style="saldo_budget_parcial" x="699" y="7" width="99" height="15" uuid="7328c334-0dfa-48de-9d2d-741c7a9f6b0c"/>
+					<textElement textAlignment="Center">
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sum_saldo}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="298" y="7" width="20" height="15" uuid="cface905-71cb-422c-a048-b099e4700e1e"/>
+					<textElement textAlignment="Right">
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{count_prop}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="73" splitType="Stretch">
+			<staticText>
+				<reportElement x="247" y="26" width="541" height="30" uuid="cdd832f4-f73e-45ee-9013-98e838b22afe"/>
+				<textElement>
+					<font size="24"/>
+				</textElement>
+				<text><![CDATA[Relatório de Projetos por Responsável]]></text>
+			</staticText>
+			<image>
+				<reportElement x="3" y="0" width="244" height="73" uuid="9199e1b1-8950-461a-9c18-af63b7a76e22"/>
+				<imageExpression><![CDATA["/home/jcoli/temp/arquivos/relatorios/marca.jpg"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="40" splitType="Stretch">
+			<printWhenExpression><![CDATA[$V{PAGE_NUMBER}>1]]></printWhenExpression>
+			<rectangle radius="10">
+				<reportElement x="0" y="2" width="802" height="34" uuid="0f567b54-6ce4-4437-9452-683f5e143c37"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="208" y="6" width="401" height="26" uuid="14fd847e-1589-4c63-90c8-1d48918f3e06"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="20"/>
+				</textElement>
+				<text><![CDATA[Relatório de Projetos por Responsável]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="66" splitType="Stretch">
+			<rectangle>
+				<reportElement isPrintRepeatedValues="false" x="3" y="0" width="796" height="61" forecolor="#FFFFFF" backcolor="#E9E2E2" uuid="b0111e80-7d05-4969-affb-d38cb6319ce9">
+					<printWhenExpression><![CDATA[new Boolean(($V{COLUMN_COUNT}.intValue() % 2) == 0)]]></printWhenExpression>
+				</reportElement>
+			</rectangle>
+			<line>
+				<reportElement x="2" y="61" width="802" height="2" uuid="aeb4d93f-acc3-4501-a51d-7f1c1e476578"/>
+			</line>
+			<textField>
+				<reportElement x="3" y="4" width="100" height="13" uuid="b879d0b6-3c1c-4c4e-bf9e-ce47911447da"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{projeto_responsavel_projeto_numero}]]></textFieldExpression>
+			</textField>
+			<textField pattern="R¤ #,##0.00" isBlankWhenNull="true">
+				<reportElement x="407" y="4" width="100" height="13" uuid="063822af-8726-432c-aefa-98129188b1ae"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{projeto_responsavel_projeto_valorbudget}]]></textFieldExpression>
+			</textField>
+			<textField pattern="R¤ #,##0.00" isBlankWhenNull="true">
+				<reportElement x="518" y="4" width="100" height="13" uuid="de3a9919-b77a-48ee-a635-bc42e69eb408"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{projeto_responsavel_projeto_valordespesas}]]></textFieldExpression>
+			</textField>
+			<textField pattern="R¤ #,##0.00" isBlankWhenNull="true">
+				<reportElement style="saldo_budget" x="643" y="4" width="100" height="13" uuid="a5da1532-739f-4e76-a348-974cd23d743a"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{projeto_responsavel_projeto_saldo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="108" y="4" width="154" height="13" uuid="1f06a760-0c53-4866-8a4c-16c0a17a717f"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{projeto_responsavel_cliente_nome}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="3" y="19" width="404" height="13" uuid="9e590f2a-fe90-4e82-8fe6-18ed1cbb03be"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{projeto_responsavel_projeto_descricaocurta}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="297" y="4" width="100" height="13" uuid="ba4df5f1-ca38-4d10-b78f-7c8080a94575"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{projeto_responsavel_planta_guerra}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="3" y="36" width="100" height="15" uuid="71586923-42b3-468f-8d75-f8325cd68af1"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{projeto_responsavel_projeto_statusatual}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.0" isBlankWhenNull="true">
+				<reportElement x="408" y="19" width="99" height="13" uuid="2b90169d-5be4-4c94-be4d-1b2ae917b29d"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{projeto_responsavel_projeto_totalhorasbudget}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.0" isBlankWhenNull="true">
+				<reportElement x="519" y="19" width="99" height="13" uuid="abdbeb12-7351-4100-a950-d68dee162776"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{projeto_responsavel_projeto_totalhoras}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.0" isBlankWhenNull="true">
+				<reportElement style="saldo_horas" x="643" y="19" width="100" height="13" uuid="6653aef4-c7ba-48e2-9025-546863c3943e"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{projeto_responsavel_projeto_saldohoras}]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="50"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="24" splitType="Stretch">
+			<textField evaluationTime="Report">
+				<reportElement x="764" y="6" width="37" height="15" uuid="b9136839-db96-4872-baa4-bcefb1889b73"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="660" y="6" width="104" height="15" uuid="95e5e4bd-18b6-4ee7-a867-214a55fa98e6"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Pagina "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd.MM.yyyy HH:mm:ss ">
+				<reportElement x="2" y="6" width="245" height="15" uuid="1aff6efa-24c5-43db-9aa5-7b2f34eaa33a"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="31" splitType="Stretch">
+			<staticText>
+				<reportElement x="12" y="11" width="121" height="15" uuid="e1ec6de9-ea48-48be-ba23-b24da421bb1b"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Valor Total do projetos:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="174" y="11" width="75" height="15" uuid="e56001f5-54e7-4ad2-8ba5-fa05536d7f3a"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[projetos, budget ]]></text>
+			</staticText>
+			<textField pattern="R¤ #,##0.00">
+				<reportElement x="251" y="11" width="102" height="15" uuid="247b7cb9-e87a-4f76-8ecb-e360b5e1053c"/>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sum_budget_total}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="353" y="11" width="60" height="15" uuid="5bbf876f-ba1b-4efd-8008-c800d11a514b"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[, despesas de]]></text>
+			</staticText>
+			<textField pattern="R¤ #,##0.00">
+				<reportElement x="415" y="11" width="103" height="15" uuid="46db6643-ccd4-467b-ad0f-150c0de4953a"/>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sum_despesa_total}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="519" y="11" width="41" height="15" uuid="90734164-a645-4982-8b78-46c64683cf42"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[, saldo]]></text>
+			</staticText>
+			<textField pattern="R¤ #,##0.00">
+				<reportElement x="560" y="11" width="99" height="15" uuid="e5f388cd-f16f-4a84-9e46-823f8d266c4a"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sum_saldo_total}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="133" y="11" width="41" height="15" uuid="7701d03b-1fd3-4e3d-9129-d803df096013"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{count_prop_total}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

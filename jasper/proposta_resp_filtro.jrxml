@@ -1,0 +1,534 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="proposta_resp" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="NoDataSection" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="18af9242-c334-4d8e-8198-eced21544af6">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="pStatus" class="java.lang.String">
+		<parameterDescription><![CDATA[valor do Status]]></parameterDescription>
+		<defaultValueExpression><![CDATA["%"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pResponsavel" class="java.lang.String">
+		<defaultValueExpression><![CDATA["%"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pDataEntregaStart" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pDataEntregaEnd" class="java.util.Date"/>
+	<parameter name="pCliente" class="java.lang.String">
+		<defaultValueExpression><![CDATA["%"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pTipo" class="java.lang.String">
+		<defaultValueExpression><![CDATA["%"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     proposta_responsavel."proposta_id" AS proposta_responsavel_proposta_id,
+     proposta_responsavel."proposta_ativa" AS proposta_responsavel_proposta_ativa,
+     proposta_responsavel."proposta_entrega" AS proposta_responsavel_proposta_entrega,
+     proposta_responsavel."proposta_portal" AS proposta_responsavel_proposta_portal,
+     proposta_responsavel."proposta_dataresponsavel" AS proposta_responsavel_proposta_dataresponsavel,
+     proposta_responsavel."proposta_datastatus" AS proposta_responsavel_proposta_datastatus,
+     proposta_responsavel."proposta_descricao" AS proposta_responsavel_proposta_descricao,
+     proposta_responsavel."proposta_descricaocurta" AS proposta_responsavel_proposta_descricaocurta,
+     proposta_responsavel."proposta_numero" AS proposta_responsavel_proposta_numero,
+     proposta_responsavel."proposta_pac" AS proposta_responsavel_proposta_pac,
+     proposta_responsavel."proposta_statusatual" AS proposta_responsavel_proposta_statusatual,
+     proposta_responsavel."proposta_tipo" AS proposta_responsavel_proposta_tipo,
+     proposta_responsavel."proposta_versao" AS proposta_responsavel_proposta_versao,
+     proposta_responsavel."proposta_cliente_id" AS proposta_responsavel_proposta_cliente_id,
+     proposta_responsavel."proposta_planta_id" AS proposta_responsavel_proposta_planta_id,
+     proposta_responsavel."proposta_responsavel" AS proposta_responsavel_proposta_responsavel,
+     proposta_responsavel."proposta_finalizacao" AS proposta_responsavel_proposta_finalizacao,
+     proposta_responsavel."proposta_motivoperda" AS proposta_responsavel_proposta_motivoperda,
+     proposta_responsavel."proposta_contatocompras" AS proposta_responsavel_proposta_contatocompras,
+     proposta_responsavel."proposta_contatoengenharia" AS proposta_responsavel_proposta_contatoengenharia,
+     proposta_responsavel."proposta_contatosolicitante" AS proposta_responsavel_proposta_contatosolicitante,
+     proposta_responsavel."proposta_valorproposta" AS proposta_responsavel_proposta_valorproposta,
+     proposta_responsavel."proposta_descricaodeclinada" AS proposta_responsavel_proposta_descricaodeclinada,
+     proposta_responsavel."proposta_numerocliente" AS proposta_responsavel_proposta_numerocliente,
+     proposta_responsavel."user_codigo" AS proposta_responsavel_user_codigo,
+     proposta_responsavel."user_area" AS proposta_responsavel_user_area,
+     proposta_responsavel."user_ativo" AS proposta_responsavel_user_ativo,
+     proposta_responsavel."user_celular" AS proposta_responsavel_user_celular,
+     proposta_responsavel."user_email" AS proposta_responsavel_user_email,
+     proposta_responsavel."user_funcao" AS proposta_responsavel_user_funcao,
+     proposta_responsavel."user_login" AS proposta_responsavel_user_login,
+     proposta_responsavel."user_nome" AS proposta_responsavel_user_nome,
+     proposta_responsavel."user_idtipo" AS proposta_responsavel_user_idtipo,
+     proposta_responsavel."cliente_id1" AS proposta_responsavel_cliente_id1,
+     proposta_responsavel."cliente_cidade" AS proposta_responsavel_cliente_cidade,
+     proposta_responsavel."cliente_estado" AS proposta_responsavel_cliente_estado,
+     proposta_responsavel."cliente_descricao" AS proposta_responsavel_cliente_descricao,
+     proposta_responsavel."cliente_nome" AS proposta_responsavel_cliente_nome,
+     proposta_responsavel."cliente_codigo_cigam" AS proposta_responsavel_cliente_codigo_cigam,
+     proposta_responsavel."planta_id" AS proposta_responsavel_planta_id,
+     proposta_responsavel."planta_cidade" AS proposta_responsavel_planta_cidade,
+     proposta_responsavel."planta_estado" AS proposta_responsavel_planta_estado,
+     proposta_responsavel."planta_descricao" AS proposta_responsavel_planta_descricao,
+     proposta_responsavel."planta_guerra" AS proposta_responsavel_planta_guerra,
+     proposta_responsavel."planta_nome" AS proposta_responsavel_planta_nome,
+     proposta_responsavel."planta_cliente_id" AS proposta_responsavel_planta_cliente_id
+FROM
+     "public"."proposta_responsavel" proposta_responsavel
+WHERE ((proposta_responsavel.proposta_statusatual like $P{pStatus})
+	AND (proposta_responsavel.user_nome like $P{pResponsavel})
+	AND (proposta_responsavel.cliente_nome like  $P{pCliente})
+	AND (proposta_responsavel.proposta_tipo like  $P{pTipo})
+	AND (proposta_responsavel.proposta_entrega >= $P{pDataEntregaStart})
+	AND (proposta_responsavel.proposta_entrega <= $P{pDataEntregaEnd})
+	AND (proposta_responsavel.proposta_ativa =  true))]]>
+	</queryString>
+	<field name="proposta_responsavel_proposta_id" class="java.lang.Integer"/>
+	<field name="proposta_responsavel_proposta_ativa" class="java.lang.Boolean"/>
+	<field name="proposta_responsavel_proposta_entrega" class="java.sql.Timestamp"/>
+	<field name="proposta_responsavel_proposta_portal" class="java.sql.Timestamp"/>
+	<field name="proposta_responsavel_proposta_dataresponsavel" class="java.sql.Timestamp"/>
+	<field name="proposta_responsavel_proposta_datastatus" class="java.sql.Timestamp"/>
+	<field name="proposta_responsavel_proposta_descricao" class="java.lang.String"/>
+	<field name="proposta_responsavel_proposta_descricaocurta" class="java.lang.String"/>
+	<field name="proposta_responsavel_proposta_numero" class="java.lang.String"/>
+	<field name="proposta_responsavel_proposta_pac" class="java.lang.String"/>
+	<field name="proposta_responsavel_proposta_statusatual" class="java.lang.String"/>
+	<field name="proposta_responsavel_proposta_tipo" class="java.lang.String"/>
+	<field name="proposta_responsavel_proposta_versao" class="java.lang.String"/>
+	<field name="proposta_responsavel_proposta_cliente_id" class="java.lang.Integer"/>
+	<field name="proposta_responsavel_proposta_planta_id" class="java.lang.Integer"/>
+	<field name="proposta_responsavel_proposta_responsavel" class="java.lang.Integer"/>
+	<field name="proposta_responsavel_proposta_finalizacao" class="java.lang.String"/>
+	<field name="proposta_responsavel_proposta_motivoperda" class="java.lang.String"/>
+	<field name="proposta_responsavel_proposta_contatocompras" class="java.lang.Integer"/>
+	<field name="proposta_responsavel_proposta_contatoengenharia" class="java.lang.Integer"/>
+	<field name="proposta_responsavel_proposta_contatosolicitante" class="java.lang.Integer"/>
+	<field name="proposta_responsavel_proposta_valorproposta" class="java.math.BigDecimal"/>
+	<field name="proposta_responsavel_proposta_descricaodeclinada" class="java.lang.String"/>
+	<field name="proposta_responsavel_proposta_numerocliente" class="java.lang.String"/>
+	<field name="proposta_responsavel_user_codigo" class="java.lang.Integer"/>
+	<field name="proposta_responsavel_user_area" class="java.lang.String"/>
+	<field name="proposta_responsavel_user_ativo" class="java.lang.Boolean"/>
+	<field name="proposta_responsavel_user_celular" class="java.lang.String"/>
+	<field name="proposta_responsavel_user_email" class="java.lang.String"/>
+	<field name="proposta_responsavel_user_funcao" class="java.lang.String"/>
+	<field name="proposta_responsavel_user_login" class="java.lang.String"/>
+	<field name="proposta_responsavel_user_nome" class="java.lang.String"/>
+	<field name="proposta_responsavel_user_idtipo" class="java.lang.Integer"/>
+	<field name="proposta_responsavel_cliente_id1" class="java.lang.Integer"/>
+	<field name="proposta_responsavel_cliente_cidade" class="java.lang.String"/>
+	<field name="proposta_responsavel_cliente_estado" class="java.lang.String"/>
+	<field name="proposta_responsavel_cliente_descricao" class="java.lang.String"/>
+	<field name="proposta_responsavel_cliente_nome" class="java.lang.String"/>
+	<field name="proposta_responsavel_cliente_codigo_cigam" class="java.lang.String"/>
+	<field name="proposta_responsavel_planta_id" class="java.lang.Integer"/>
+	<field name="proposta_responsavel_planta_cidade" class="java.lang.String"/>
+	<field name="proposta_responsavel_planta_estado" class="java.lang.String"/>
+	<field name="proposta_responsavel_planta_descricao" class="java.lang.String"/>
+	<field name="proposta_responsavel_planta_guerra" class="java.lang.String"/>
+	<field name="proposta_responsavel_planta_nome" class="java.lang.String"/>
+	<field name="proposta_responsavel_planta_cliente_id" class="java.lang.Integer"/>
+	<variable name="sum_prop" class="java.lang.Number" resetType="Group" resetGroup="proposta_responsavel_user_nome" calculation="Sum">
+		<variableExpression><![CDATA[$F{proposta_responsavel_proposta_valorproposta}]]></variableExpression>
+	</variable>
+	<variable name="sum_prop_total" class="java.lang.Number" calculation="Sum">
+		<variableExpression><![CDATA[$F{proposta_responsavel_proposta_valorproposta}]]></variableExpression>
+	</variable>
+	<variable name="count_prop_total" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{proposta_responsavel_proposta_numero}]]></variableExpression>
+	</variable>
+	<group name="proposta_responsavel_user_nome">
+		<groupExpression><![CDATA[$F{proposta_responsavel_user_nome}]]></groupExpression>
+		<groupHeader>
+			<band height="67">
+				<rectangle radius="10">
+					<reportElement x="0" y="0" width="799" height="65" uuid="4a348222-ef44-4689-9438-f0f45de11705"/>
+				</rectangle>
+				<textField>
+					<reportElement x="133" y="5" width="100" height="15" uuid="ec2f5475-54ef-4732-9aca-3420eb812013"/>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{proposta_responsavel_user_nome}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="12" y="5" width="100" height="15" uuid="3328beb9-383d-414b-b59c-fecaf91ee87b"/>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+					<text><![CDATA[Responsável:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="12" y="19" width="100" height="15" uuid="2394a636-a05c-49d7-af13-602c56818da4"/>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+					<text><![CDATA[Numero:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="133" y="19" width="100" height="15" uuid="1b668ad4-a3bc-4423-92a4-fbeaf1f4f6f2"/>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+					<text><![CDATA[Cliente]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="297" y="19" width="100" height="15" uuid="2857f968-49a7-42b9-ad47-47a88079b8a4"/>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+					<text><![CDATA[Planta]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="688" y="19" width="100" height="15" uuid="1c723bec-b6fb-4e21-850a-6b3eef4370d5"/>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+					<text><![CDATA[Valor]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="12" y="33" width="100" height="15" uuid="0aab2b9e-62e7-4505-9b0f-59033afefb2b"/>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+					<text><![CDATA[Descrição]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="490" y="34" width="100" height="15" uuid="2dc394b8-3462-47f8-ad59-f6b7a7a8d343"/>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+					<text><![CDATA[Status]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="659" y="34" width="100" height="15" uuid="5158cee9-3a00-49d0-b264-f9336d69d335"/>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+					<text><![CDATA[Data do Status]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="490" y="19" width="100" height="15" uuid="fcd2ea1d-98ab-4e87-9e81-7ba840cffc30"/>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+					<text><![CDATA[PAC]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="12" y="47" width="100" height="15" uuid="5e7fbdf9-97e3-4b08-b673-94897b97f808"/>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+					<text><![CDATA[Data de Entrega]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="133" y="47" width="100" height="15" uuid="8a7c3cc0-45a3-421b-8751-779c0efc14b7"/>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+					<text><![CDATA[Tipo]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="41">
+				<rectangle radius="10">
+					<reportElement x="0" y="0" width="798" height="28" uuid="faa2296e-ae25-4d62-8615-f70deadf4e37"/>
+				</rectangle>
+				<staticText>
+					<reportElement x="12" y="7" width="161" height="15" uuid="e445cf64-e2b8-4fbb-ad67-fc5666cd5ff5"/>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+					<text><![CDATA[Total de propostas do responsável]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="174" y="7" width="133" height="15" uuid="db902b53-7ba7-4385-a33a-b2d49161e6e4"/>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{proposta_responsavel_user_nome}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="306" y="7" width="19" height="15" uuid="6aa83b5b-b8b3-4022-9058-d987a0a9ff69"/>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{proposta_responsavel_user_nome_COUNT}]]></textFieldExpression>
+				</textField>
+				<textField pattern="R¤ ##,###,##0.00">
+					<reportElement x="463" y="7" width="155" height="15" uuid="19a0677e-2ac5-4a8c-a7e2-cd56efaaa4fe"/>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sum_prop}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="0" y="32" width="802" height="2" uuid="04e04e61-d699-43fa-be52-49f610cc162f"/>
+				</line>
+				<line>
+					<reportElement x="0" y="35" width="802" height="2" uuid="e8ccd665-5c47-4a9d-8bc8-ccad3f79173e"/>
+				</line>
+				<staticText>
+					<reportElement x="377" y="7" width="83" height="15" uuid="1fe101ed-2b66-480a-9f80-de9a54e8ce77"/>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+					<text><![CDATA[com valor total de]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="324" y="7" width="55" height="15" uuid="0ddcec7e-1172-4d58-9eee-a9f8694e867d"/>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+					<text><![CDATA[propostas,]]></text>
+				</staticText>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="73" splitType="Stretch">
+			<staticText>
+				<reportElement x="247" y="26" width="541" height="30" uuid="cdd832f4-f73e-45ee-9013-98e838b22afe"/>
+				<textElement>
+					<font size="24"/>
+				</textElement>
+				<text><![CDATA[Relatório de Propostas por Responsável]]></text>
+			</staticText>
+			<image>
+				<reportElement x="3" y="0" width="244" height="73" uuid="9199e1b1-8950-461a-9c18-af63b7a76e22"/>
+				<imageExpression><![CDATA["/home/jcoli/temp/arquivos/relatorios/marca.jpg"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="40" splitType="Stretch">
+			<printWhenExpression><![CDATA[$V{PAGE_NUMBER}>1]]></printWhenExpression>
+			<rectangle radius="10">
+				<reportElement x="0" y="2" width="802" height="34" uuid="0f567b54-6ce4-4437-9452-683f5e143c37"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="208" y="6" width="401" height="26" uuid="14fd847e-1589-4c63-90c8-1d48918f3e06"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="20"/>
+				</textElement>
+				<text><![CDATA[Relatório de Propostas por Responsável]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="66" splitType="Stretch">
+			<rectangle>
+				<reportElement x="3" y="0" width="796" height="61" forecolor="#FFFFFF" backcolor="#E9E2E2" uuid="b0111e80-7d05-4969-affb-d38cb6319ce9">
+					<printWhenExpression><![CDATA[new Boolean(($V{COLUMN_COUNT}.intValue() % 2) == 0)]]></printWhenExpression>
+				</reportElement>
+			</rectangle>
+			<textField>
+				<reportElement x="297" y="7" width="188" height="15" uuid="fbbccd6d-ac7d-41c1-b293-55b0b65c6d4e"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{proposta_responsavel_planta_nome}]]></textFieldExpression>
+			</textField>
+			<textField pattern="R¤ #,##0.00">
+				<reportElement x="688" y="7" width="100" height="15" uuid="dd0dd486-f0cc-4a8e-bce6-a74d22c67f86"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{proposta_responsavel_proposta_valorproposta}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="12" y="26" width="473" height="15" uuid="407e3383-1763-4999-a270-ef4a4c700678"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{proposta_responsavel_proposta_descricaocurta}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="490" y="26" width="129" height="15" uuid="c08872df-6eae-438a-bb6e-9b4cfb90a543"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{proposta_responsavel_proposta_statusatual}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="2" y="61" width="802" height="2" uuid="aeb4d93f-acc3-4501-a51d-7f1c1e476578"/>
+			</line>
+			<textField pattern="dd/MM/yyyy HH:mm:ss">
+				<reportElement x="659" y="26" width="129" height="15" uuid="ec6a68eb-8b2d-4760-8f8e-855955e5ec87"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{proposta_responsavel_proposta_datastatus}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="490" y="7" width="100" height="15" uuid="c12e446a-fb1f-4ca0-a667-46db006c1e6e"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{proposta_responsavel_proposta_pac}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="12" y="43" width="100" height="15" uuid="09252977-cb9c-4180-a95d-8e9695ce9886"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{proposta_responsavel_proposta_entrega}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="133" y="43" width="100" height="15" uuid="23a38035-ba79-4527-ae0a-1da713123783"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{proposta_responsavel_proposta_tipo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Transparent" x="12" y="7" width="100" height="15" uuid="8aa94947-a313-49ad-a0dd-76283de1b3cb"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{proposta_responsavel_proposta_numero}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="133" y="7" width="153" height="15" uuid="9cd681c2-a50f-4bac-9247-5e9bee721a09"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{proposta_responsavel_cliente_nome}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="24" splitType="Stretch">
+			<textField evaluationTime="Report">
+				<reportElement x="764" y="6" width="37" height="15" uuid="b9136839-db96-4872-baa4-bcefb1889b73"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="660" y="6" width="104" height="15" uuid="95e5e4bd-18b6-4ee7-a867-214a55fa98e6"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Pagina "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd.MM.yyyy HH:mm:ss ">
+				<reportElement x="2" y="6" width="245" height="15" uuid="1aff6efa-24c5-43db-9aa5-7b2f34eaa33a"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="31" splitType="Stretch">
+			<textField pattern="R¤ #,##0.00">
+				<reportElement x="147" y="11" width="100" height="15" uuid="82fbbb83-cdbc-4592-80c2-e05e91d64f8b"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sum_prop_total}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="12" y="11" width="121" height="15" uuid="e1ec6de9-ea48-48be-ba23-b24da421bb1b"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Valor Total das Propostas:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="268" y="11" width="29" height="15" uuid="f5b26ee3-7bce-4f12-b85f-02365bb7f545"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{count_prop_total}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="247" y="11" width="21" height="15" uuid="003b2ecc-493c-40fc-9de6-e5dca74ddfde"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[de]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="297" y="11" width="63" height="15" uuid="e56001f5-54e7-4ad2-8ba5-fa05536d7f3a"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[propostas]]></text>
+			</staticText>
+		</band>
+	</summary>
+	<noData>
+		<band height="50">
+			<textField>
+				<reportElement x="39" y="30" width="100" height="20" uuid="4b7ba587-b6a2-4ca8-99b0-70765458a11d"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{pStatus}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="188" y="0" width="412" height="20" uuid="121720a3-3797-4ff5-9ebe-f859979edca1"/>
+				<text><![CDATA[Não foram encontrados registros no banco de dados que satisfaçam a consulta.]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="702" y="30" width="100" height="20" uuid="d8ce0d95-74c8-4ca1-abb4-dd95bfc1b926"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{pTipo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="667" y="30" width="35" height="20" uuid="6e335fb1-344c-441a-8f2d-6b37ae897bee"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Tipo:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="223" y="30" width="251" height="20" uuid="a5e134d1-f847-4abf-815f-c4b7db435635"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{pResponsavel}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="147" y="30" width="76" height="20" uuid="9c6880b6-7f5a-4efb-9c5a-3f64ae1075ae"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Responsável:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="474" y="30" width="37" height="20" uuid="cf71f004-514f-4c55-b97d-a749dd39b4dc"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Cliente:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="511" y="30" width="156" height="20" uuid="23550b52-d8e6-4927-a0c3-c614f01aa524"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{pCliente}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="30" width="39" height="20" uuid="44f435b9-941a-44b5-b47b-e74d8bb3a421"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Status:]]></text>
+			</staticText>
+		</band>
+	</noData>
+</jasperReport>

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:sec="http://www.springframework.org/security/facelets/tags">
+
+    <ui:composition>
+
+        <h:form id="listHoliday">
+            <p:messages id="messagesParam" showDetail="false" autoUpdate="true"
+                        closable="true" />
+
+            <h:outputText value="#{contextBean.locale.displayLanguage}"/>
+
+            <p:dataTable scrollHeight="550" scrollRows="20" scrollable="false"
+                         selection="#{paramBean.selHoliday}" lazy="true"
+                         id="tableHoliday" paginator="true" rows="20" selectionMode="single"
+                         rowKey="#{holiday.id}" paginatorPosition="bottom"
+                         emptyMessage="#{msg.no_data}"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         value="#{paramBean.listHoliday}" var="holiday"
+                         >
+                <p:ajax event="rowSelect"
+                        update=":listHoliday:gridParam, :listHoliday:btnParamEditar"
+                        listener="#{paramBean.onRowSelectHoliday}">
+                    <f:setPropertyActionListener target="#{paramBean.selParam}"
+                                                 value="listaTipoParam" />
+                </p:ajax>
+
+                <f:facet name="header">#{msg.Holiday}</f:facet>
+
+                <p:column headerText="#{msg.date}">
+                    <h:outputText value="#{holiday.holidayDate}" >
+                        <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
+                    </h:outputText>     
+                </p:column>
+
+                <p:column headerText="#{msg.description}">
+                    <h:outputText value="#{holiday.name}" />
+                </p:column>
+
+
+                <p:column headerText="#{msg.domain}" rendered="#{((contextBean.locale.displayLanguage) eq ('English'))}">
+                    <h:outputText value="#{holiday.domain.description_en_US}" />
+                </p:column>
+
+                <p:column headerText="#{msg.domain}" rendered="#{((contextBean.locale.displayLanguage) eq ('Portuguese'))}">
+                    <h:outputText value="#{holiday.domain.description_pt_BR}" />
+                </p:column>
+
+                <p:column headerText="#{msg.domain}" rendered="#{((contextBean.locale.displayLanguage) eq ('Spanish'))}">
+                    <h:outputText value="#{holiday.domain.description_es_ES}" />
+                </p:column>
+
+                <p:column headerText="#{msg.type}">
+                    <h:outputText value="#{holiday.type}" />
+                </p:column>
+
+            </p:dataTable>
+
+            <p:panel header="#{msg.holidayData}">
+                <h:panelGrid id="gridParam" columns="3" cellpadding="3">
+
+
+                    <h:outputLabel value="#{msg.name}: *" for="descCurtaNota" />
+                    <p:inputText id="descCurtaNota" label="#{msg.name}" size="60"
+                                 requiredMessage="#{msg.name} #{msg.required} " maxlength="25"
+                                 value="#{paramBean.holiday.name}" required="true" 
+                                 disabled="#{((paramBean.isbHolidayEdita()))}" />
+                   
+                    <p:message for="descCurtaNota" />
+
+
+                    <h:outputLabel value="#{msg.domain}:" for="filparam" />
+                    <p:selectOneMenu value="#{paramBean.holiday.domain}" 
+                                     id="filparam" disabled="#{((paramBean.isbHolidayEdita()))}">
+                        <f:selectItem itemLabel="#{paramBean.holiday.domain.description_en_US}"
+                                      itemValue="#{paramBean.holiday.domain}" />
+                        <f:selectItems value="#{paramBean.listDomain}" />
+                    </p:selectOneMenu>
+                    <p:message for="filparam" />
+
+                    <h:outputLabel value="#{msg.type}:" for="tipoHoliday" />
+                    <p:selectOneMenu value="#{paramBean.holiday.type}" 
+                                     id="tipoHoliday" disabled="#{((paramBean.isbHolidayEdita()))}">
+                        <f:selectItem itemLabel="#{paramBean.holiday.type}"
+                                      itemValue="#{paramBean.holiday.type}" />
+                        <f:selectItem itemLabel="Normal" itemValue="Normal" />
+                        <f:selectItem itemLabel="Facultativo" itemValue="Facultativo" />
+
+                    </p:selectOneMenu>
+                    <p:message for="tipoHoliday" />
+
+                    <h:outputLabel value="#{msg.holidayDate}:" for="dataHoliday" />
+                    <p:calendar id="dataHoliday" locale="pt" showButtonPanel="true" disabled="#{((paramBean.isbHolidayEdita()))}"
+                                navigator="true" value="#{paramBean.holiday.holidayDate}"
+                                pattern="dd/MM/yyyy " />
+                    <p:message for="dataHoliday" />
+
+
+
+
+
+                </h:panelGrid>
+
+                <p:commandButton action="#{paramBean.holidayNew()}" id="btnParamNew" update="gridParam, btnParamSalvarNew, btnParamEditar" immediate="true"
+                                 value="#{msg.new1}" disabled="#{((paramBean.isbNewHoliday()))}"/>
+                <p:commandButton action="#{paramBean.editHolidaySel()}" id="btnParamEditar" update="gridParam,   btnParamSalvar"
+                                 value="#{msg.edit}" disabled="#{(paramBean.isbNewHolidaySel())}"/>
+
+                <p:commandButton action="#{paramBean.saveHolidayEditado()}" id="btnParamSalvar" update="tableHoliday, gridParam, btnParamSalvar "
+                                 value="#{msg.saveEdit}" disabled="#{(!(paramBean.isbEditaHoliday()))}"/>
+
+                <p:commandButton action="#{paramBean.saveHolidayNew()}" id="btnParamSalvarNew" update="tableHoliday, gridParam, btnParamSalvarNew, btnParamEditar"
+                                 value="#{msg.saveNew}" disabled="#{(!(paramBean.isbNewHoliday()))}"/>
+            </p:panel>    
+
+
+
+        </h:form>
+
+    </ui:composition>
+
+</html>

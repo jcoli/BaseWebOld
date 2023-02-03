@@ -1,0 +1,11 @@
+﻿SELECT extract(DAY FROM p.dataentrega), extract(MONTH FROM p.dataentrega), extract(YEAR FROM p.dataentrega), 
+                      p.descricaocurta, p.numero, p.pac, p.statusatual, c.nome, u.nome, u.email, p.tipo
+                       FROM proposta p
+                       JOIN cliente c ON c.id = p.cliente_id 
+                       JOIN user u on u.codigo = p.responsavel
+                       WHERE p.dataentrega < '2014-10-22' and p.statusatual <> 'Respondida no Portal'
+		       and p.statusatual <> 'Declinada' and p.statusatual <> 'Proposta Ganha'
+                       and p.statusatual <> 'Cancelada' and p.statusatual <> 'Nao Respondida'
+                       and p.statusatual <> 'Pedido SAI-BR' and p.statusatual <> 'Perdida'
+                       and p.statusatual <> 'Pedido Outra Empresa' and ativa = true order by p.dataentrega	
+		        	

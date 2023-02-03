@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/security
+        http://www.springframework.org/schema/security/spring-security-3.2.xsd"
+       xmlns:security="http://www.springframework.org/schema/security">
+    
+    <security:http auto-config="false"  use-expressions="true" access-denied-page="/general-error.jsf" entry-point-ref="authenticationEntryPoint">
+        <security:intercept-url pattern="/public/login.jsf" access="permitAll()" /> 
+        <security:intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMINISTRADOR')" />
+        <security:intercept-url pattern="/restrict/**" access="hasRole('ROLE_USUARIO')" />
+        
+        <security:logout />
+        <security:custom-filter ref="authenticationFilter" position="FORM_LOGIN_FILTER" />
+    </security:http>
+      
+    <bean id="systemDataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+        <property name="jndiName">
+            <value>java:comp/env/jdbc/SystemDB</value>
+        </property>
+        
+    </bean>
+    
+    
+    
+    <bean id="authenticationFilter" class="system.base.web.util.AuthenticationFilter" p:authenticationManager-ref="authenticationManager"/>
+    <bean id="authenticationPhaseFilter" class="system.base.web.util.AuthenticationPhaseListener" />
+    <bean id="authenticationEntryPoint" class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint" p:loginFormUrl="/public/login.jsf"/>
+    <security:authentication-manager alias="authenticationManager" />
+    
+</beans>

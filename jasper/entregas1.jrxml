@@ -1,0 +1,473 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="entregas" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="519c5e46-a651-4a86-9020-0fac2c0432bd">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="style1">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean(($V{COLUMN_COUNT}.intValue() % 2) == 0)]]></conditionExpression>
+			<style/>
+		</conditionalStyle>
+	</style>
+	<parameter name="pStatus" class="java.lang.String">
+		<defaultValueExpression><![CDATA["%"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     entrega."id" AS entrega_A_id,
+     entrega."frete" AS entrega_A_frete,
+     entrega."fretecompra" AS entrega_A_fretecompra,
+     entrega."area" AS entrega_A_area,
+     entrega."cpd" AS entrega_A_cpd,
+     entrega."datacadastro" AS entrega_A_datacadastro,
+     entrega."dataentregacliente" AS entrega_A_dataentregacliente,
+     entrega."dataentregafornecedor" AS entrega_A_dataentregafornecedor,
+     entrega."dataentregastatus" AS entrega_A_dataentregastatus,
+     entrega."descricao" AS entrega_A_descricao,
+     entrega."descricaocurta" AS entrega_A_descricaocurta,
+     entrega."lead" AS entrega_A_lead,
+     entrega."notafiscal" AS entrega_A_notafiscal,
+     entrega."numero" AS entrega_A_numero,
+     entrega."observacao" AS entrega_A_observacao,
+     entrega."qtde" AS entrega_A_qtde,
+     entrega."qtdeentregue" AS entrega_A_qtdeentregue,
+     entrega."status" AS entrega_A_status,
+     entrega."statusfornecedor" AS entrega_A_statusfornecedor,
+     entrega."unidade" AS entrega_A_unidade,
+     entrega."valor" AS entrega_A_valor,
+     entrega."valorunitario" AS entrega_A_valorunitario,
+     entrega."autorentrega_id" AS entrega_A_autorentrega_id,
+     entrega."cliente_id" AS entrega_A_cliente_id,
+     entrega."fornecedor_id" AS entrega_A_fornecedor_id,
+     entrega."pedido_id" AS entrega_A_pedido_id,
+     entrega."pedidoaberto_id" AS entrega_A_pedidoaberto_id,
+     entrega."requisicao_id" AS entrega_A_requisicao_id,
+     entrega."valorcompra" AS entrega_A_valorcompra,
+     entrega."valorcompratotal" AS entrega_A_valorcompratotal,
+     entrega."tipo" AS entrega_A_tipo,
+     entrega."planta_id" AS entrega_A_planta_id,
+     entrega."frete" AS entrega_frete,
+     entrega."fretecompra" AS entrega_fretecompra,
+     entrega."area" AS entrega_area,
+     entrega."cpd" AS entrega_cpd,
+     cliente."nome" AS cliente_nome,
+     pedido."numero" AS pedido_numero,
+     planta."guerra" AS planta_guerra,
+     requisicao."numero" AS requisicao_numero
+FROM
+     "public"."entrega" entrega INNER JOIN "public"."cliente" cliente ON entrega."cliente_id" = cliente."id"
+     INNER JOIN "public"."planta" planta ON entrega."planta_id" = planta."id"
+     INNER JOIN "public"."pedido" pedido ON entrega."pedido_id" = pedido."id"
+     INNER JOIN "public"."requisicao" requisicao ON entrega."requisicao_id" = requisicao."id"]]>
+	</queryString>
+	<field name="entrega_a_id" class="java.lang.Integer"/>
+	<field name="entrega_a_frete" class="java.math.BigDecimal"/>
+	<field name="entrega_a_fretecompra" class="java.math.BigDecimal"/>
+	<field name="entrega_a_area" class="java.lang.String"/>
+	<field name="entrega_a_cpd" class="java.lang.String"/>
+	<field name="entrega_a_datacadastro" class="java.sql.Timestamp"/>
+	<field name="entrega_a_dataentregacliente" class="java.sql.Timestamp"/>
+	<field name="entrega_a_dataentregafornecedor" class="java.sql.Timestamp"/>
+	<field name="entrega_a_dataentregastatus" class="java.sql.Timestamp"/>
+	<field name="entrega_a_descricao" class="java.lang.String"/>
+	<field name="entrega_a_descricaocurta" class="java.lang.String"/>
+	<field name="entrega_a_lead" class="java.lang.String"/>
+	<field name="entrega_a_notafiscal" class="java.lang.String"/>
+	<field name="entrega_a_numero" class="java.lang.String"/>
+	<field name="entrega_a_observacao" class="java.lang.String"/>
+	<field name="entrega_a_qtde" class="java.math.BigDecimal"/>
+	<field name="entrega_a_qtdeentregue" class="java.math.BigDecimal"/>
+	<field name="entrega_a_status" class="java.lang.String"/>
+	<field name="entrega_a_statusfornecedor" class="java.lang.String"/>
+	<field name="entrega_a_unidade" class="java.lang.String"/>
+	<field name="entrega_a_valor" class="java.math.BigDecimal"/>
+	<field name="entrega_a_valorunitario" class="java.math.BigDecimal"/>
+	<field name="entrega_a_autorentrega_id" class="java.lang.Integer"/>
+	<field name="entrega_a_cliente_id" class="java.lang.Integer"/>
+	<field name="entrega_a_fornecedor_id" class="java.lang.Integer"/>
+	<field name="entrega_a_pedido_id" class="java.lang.Integer"/>
+	<field name="entrega_a_pedidoaberto_id" class="java.lang.Integer"/>
+	<field name="entrega_a_requisicao_id" class="java.lang.Integer"/>
+	<field name="entrega_a_valorcompra" class="java.math.BigDecimal"/>
+	<field name="entrega_a_valorcompratotal" class="java.math.BigDecimal"/>
+	<field name="entrega_a_tipo" class="java.lang.String"/>
+	<field name="entrega_a_planta_id" class="java.lang.Integer"/>
+	<field name="entrega_frete" class="java.math.BigDecimal"/>
+	<field name="entrega_fretecompra" class="java.math.BigDecimal"/>
+	<field name="entrega_area" class="java.lang.String"/>
+	<field name="entrega_cpd" class="java.lang.String"/>
+	<field name="cliente_nome" class="java.lang.String"/>
+	<field name="pedido_numero" class="java.lang.String"/>
+	<field name="planta_guerra" class="java.lang.String"/>
+	<field name="requisicao_numero" class="java.lang.String"/>
+	<sortField name="PAGE_NUMBER" type="Variable"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<rectangle radius="10">
+				<reportElement x="0" y="0" width="802" height="79" uuid="a9b9373d-47bf-40c5-920b-c208ab3bc576"/>
+			</rectangle>
+			<image>
+				<reportElement x="15" y="11" width="202" height="58" uuid="05a15a20-9f70-4379-a429-487c714c08a0"/>
+				<imageExpression><![CDATA["/home/jcoli/NetBeansProjects/ProjetosSAIBR/web/resources/imagens/marca.jpg"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="336" y="24" width="278" height="30" uuid="bdd367b9-fcdf-4df5-bf11-377e2c3b35af"/>
+				<textElement>
+					<font size="24"/>
+				</textElement>
+				<text><![CDATA[Relatório de Entregas]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch">
+			<rectangle radius="10">
+				<reportElement x="0" y="0" width="802" height="35" uuid="dca13899-1697-4446-a649-590e663cb68c"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="580" y="25" width="34" height="0" uuid="ef817dfd-d9c1-4ca7-a6ce-0df1701292a9"/>
+				<text><![CDATA[entrega_a_descricao]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="335" y="6" width="174" height="25" uuid="dd3669d0-3e6a-4f5b-ad8b-440a7646bcfd"/>
+				<textElement>
+					<font size="16"/>
+				</textElement>
+				<text><![CDATA[Relatório de Entregas]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="68" splitType="Stretch">
+			<rectangle radius="10">
+				<reportElement x="0" y="2" width="800" height="64" uuid="033b005d-c245-4479-bfd2-113c6d3fbfd9"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="3" y="8" width="38" height="20" uuid="c9232d02-2b85-4247-9e55-5c513538ea52"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[Número]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="8" width="100" height="20" uuid="6b0524e5-b857-44b7-9c23-1f592d5ea514"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[Cliente]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="140" y="8" width="62" height="20" uuid="baa892e4-6fef-422a-8c8f-b15dae4e1674"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[Planta]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="202" y="8" width="171" height="20" uuid="2ddbfe7a-aafb-47eb-b9d3-f5ef49bab09a"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[Descrição]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="371" y="8" width="77" height="20" uuid="dc3fbf06-361d-4b69-b092-fedf0806008d"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[Requisição]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="448" y="8" width="46" height="20" uuid="496d3e44-bf61-46fb-be8c-45c8950ff1bd"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[Pedido]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="494" y="8" width="65" height="20" uuid="974c0448-a7ee-4c43-981c-f28f26db04c0"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[Data de  Entrega ao Cliente]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="614" y="8" width="55" height="20" uuid="ff7d94b3-e17a-4ccb-943e-f4df3990c45c"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[Data de Entrega do Fornecedor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="757" y="8" width="39" height="20" uuid="3b258b62-f579-4ce2-a8b1-dce5ae3a231b"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[Origem]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="559" y="8" width="55" height="20" uuid="3d9518f8-45ba-4970-b74c-44713e73c4c4"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[Status Cliente]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="669" y="8" width="51" height="20" uuid="dcc9e73c-1407-4d89-9e18-c3a77b686020"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[Status Fornecedor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="38" width="51" height="20" uuid="08ee695d-e2f9-4695-aa18-e26f1c2ec060"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[Quantidade Pedida]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="54" y="38" width="48" height="20" uuid="d3a98dc4-3f9e-4016-9464-2bc1bedbeb06"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[Quantidade Entregue]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="38" width="38" height="20" uuid="110228c7-eb90-4a92-a81d-25913aa32ca5"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[Unidade]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="138" y="38" width="100" height="20" uuid="d8d03bc8-1e89-4031-a789-e27a2e72a7e3"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[Valor Unitário]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="236" y="38" width="100" height="20" uuid="adb4fad4-d411-431a-a6c8-e8e3be441c38"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[Valor de Venda Total]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="436" y="38" width="100" height="20" uuid="4bb88e81-d662-41a8-b87c-33b63cc4d304"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[Valor de Compra Unitário]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="536" y="38" width="100" height="20" uuid="1c701a25-a8e6-4bae-ae66-93fb234d3bba"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[Valor Total de Compra]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="336" y="38" width="100" height="20" uuid="1813992b-a5a2-423e-9ed9-19762e9a3bd4"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[Frete Venda]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="636" y="38" width="100" height="20" uuid="bb25f613-0d7b-488f-add6-d17e9f883173"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[Frete Compra]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="44" splitType="Stretch">
+			<rectangle>
+				<reportElement x="-2" y="2" width="806" height="37" forecolor="#FFFFFF" backcolor="#F7F5F5" uuid="a8a33e4d-136d-4a57-945b-854c2e01aa5b">
+					<printWhenExpression><![CDATA[new Boolean(($V{COLUMN_COUNT}.intValue() % 2) == 0)]]></printWhenExpression>
+				</reportElement>
+			</rectangle>
+			<textField>
+				<reportElement x="2" y="4" width="38" height="15" uuid="a985c7c9-173f-4a7f-a125-cb5d237a2d77"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{entrega_a_numero}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="41" y="4" width="100" height="15" uuid="0d56aba4-67e0-4d8c-8a0c-2f2224b41595"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cliente_nome}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="FixRelativeToBottom" x="141" y="4" width="62" height="15" uuid="a4df8fb2-bff0-46bc-85e3-261d05020a80"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{planta_guerra}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="203" y="4" width="171" height="15" uuid="6384c758-14af-4cc5-919e-19f2ed0a33df"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{entrega_a_descricaocurta}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="374" y="4" width="77" height="15" uuid="f82817ef-735e-40f5-828c-d9a69bf700c9"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{requisicao_numero}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="448" y="4" width="46" height="15" uuid="d99bc815-d124-4f08-afbc-d984607f7d0b"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pedido_numero}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="494" y="4" width="65" height="15" uuid="6a39f330-de73-4dc5-a9c2-cb970ac26068"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{entrega_a_dataentregacliente}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="614" y="4" width="55" height="15" uuid="854fac4e-3d3c-45c9-a3d3-a93faa6ae0c6"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{entrega_a_dataentregafornecedor}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="757" y="4" width="39" height="15" uuid="c0c3c926-52e6-4871-9225-acc120e772df"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{entrega_a_tipo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="559" y="4" width="55" height="15" uuid="c17d97f4-a580-4e76-b126-66b10abc61a7"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{entrega_a_status}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="669" y="4" width="51" height="15" uuid="dbb23299-c3bd-4388-ba51-41edcd559d7c"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{entrega_a_statusfornecedor}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="3" y="21" width="52" height="20" uuid="093c5755-3df3-448a-bd44-8caf10a49724"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{entrega_a_qtde}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="55" y="19" width="48" height="20" uuid="116dbaf6-a880-41bb-82ae-8ece5f6bd1ff"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{entrega_a_qtdeentregue}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="102" y="19" width="38" height="20" uuid="95b11def-cf2d-489d-842f-a76cbeb33b50"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{entrega_a_unidade}]]></textFieldExpression>
+			</textField>
+			<textField pattern="R$ #,##0.00">
+				<reportElement x="140" y="19" width="100" height="20" uuid="1b032625-97c0-4933-ba17-8b98c8ba4ef8"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{entrega_a_valorunitario}]]></textFieldExpression>
+			</textField>
+			<textField pattern="R$ #,##0.00">
+				<reportElement x="240" y="19" width="100" height="20" uuid="fbb5ae61-d0bf-4b7c-bf60-7596e10c096f"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{entrega_a_valor}]]></textFieldExpression>
+			</textField>
+			<textField pattern="R$ #,##0.00">
+				<reportElement x="440" y="21" width="100" height="20" uuid="c7269eda-a308-447c-a50e-7480928426d7"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{entrega_a_valorcompra}]]></textFieldExpression>
+			</textField>
+			<textField pattern="R$ #,##0.00">
+				<reportElement x="540" y="21" width="100" height="20" uuid="81fa685a-9c41-4565-8aad-8a6bafcfd99b"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{entrega_a_valorcompratotal}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="340" y="19" width="100" height="20" uuid="20cc6c23-ceff-4e1c-ad9f-aaa2abe3e46d"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{entrega_frete}]]></textFieldExpression>
+			</textField>
+			<textField pattern="R$ #,##0.00">
+				<reportElement x="640" y="21" width="100" height="20" uuid="0e6e5460-bb94-41a2-857a-557abec926f9"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{entrega_a_fretecompra}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch">
+			<rectangle radius="10">
+				<reportElement x="3" y="3" width="802" height="47" uuid="048336d9-29e2-49aa-b9bd-7c8a311e7468"/>
+			</rectangle>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="15" y="17" width="100" height="20" uuid="8bf29cc5-a67f-4b09-8cb5-4fbe408ed86e"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="653" y="17" width="104" height="20" uuid="7e54c545-2bc6-4dec-91ca-5f848cc30970"/>
+				<textElement textAlignment="Right">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Pagina "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="759" y="17" width="37" height="20" uuid="a6736ec9-fb26-4fdc-943e-c4d56b37686b"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

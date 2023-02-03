@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <ui:composition>
+         <f:view> <f:event type="preRenderView" listener="#{contextBean.getLocale}"/></f:view>
+        <h:form id="filter">
+           
+            <p:panel header="#{msg.paramData}">
+
+                <h:panelGrid id="gridParam" columns="6" cellpadding="3">
+
+
+                    <h:outputLabel value="#{msg.paramType}" for="filparam"   />
+                    <p:selectOneMenu  id="filparam" value = "#{globalBean.typeParam}">
+                        <f:selectItem itemLabel="" itemValue="" />
+                        <c:if test="#{globalBean.locale.toString() == ('en_US')}" >
+                            <f:selectItem itemLabel="" itemValue="" />
+                            <f:selectItem itemLabel="Boolean" itemValue="boolean" />
+                            <f:selectItem itemLabel="String" itemValue="string" />
+                            <f:selectItem itemLabel="Integer" itemValue="integer" />
+                            <f:selectItem itemLabel="Float" itemValue="float" />
+                            <f:selectItem itemLabel="Double" itemValue="double" />
+                            <f:selectItem itemLabel="TimeStamp" itemValue="timestamp" />
+                        </c:if>
+                        <c:if test="#{globalBean.locale.toString() == ('pt_BR')}" >
+                            <f:selectItem itemLabel="Logico" itemValue="boolean" />
+                            <f:selectItem itemLabel="Texto" itemValue="string" />
+                            <f:selectItem itemLabel="Inteiro" itemValue="integer" />
+                            <f:selectItem itemLabel="Ponto Flutuante" itemValue="float" />
+                            <f:selectItem itemLabel="Duplo" itemValue="double" />
+                            <f:selectItem itemLabel="Data/hora" itemValue="timestamp" />
+                        </c:if>
+                        <c:if test="#{globalBean.locale.toString() == ('es_ES')}" >
+                            <f:selectItem itemLabel="Logico" itemValue="boolean" />
+                            <f:selectItem itemLabel="Texto" itemValue="string" />
+                            <f:selectItem itemLabel="Inteiro" itemValue="integer" />
+                            <f:selectItem itemLabel="Ponto Flutuante" itemValue="float" />
+                            <f:selectItem itemLabel="Duplo" itemValue="double" />
+                            <f:selectItem itemLabel="Data/hora" itemValue="timestamp" />
+                        </c:if>
+                    </p:selectOneMenu>
+                    <p:message for="filparam" />
+
+                    <p:commandButton action="#{globalBean.filterParam()}" value="#{msg.filter}" update=":listParams:tableParam " />
+                </h:panelGrid>
+            </p:panel>
+        </h:form>
+
+    </ui:composition>
+</html>

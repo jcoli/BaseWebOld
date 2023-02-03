@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context antiJARLocking="true" path="/BaseWeb">
+  <Resource auth="Container" 
+            driverClassName="org.postgresql.Driver" 
+            maxActive="100" 
+            maxIdle="30" 
+            maxWait="10000" 
+            name="jdbc/SystemDB" 
+            password="shady55" 
+            type="javax.sql.DataSource" 
+            url="jdbc:postgresql://localhost:5432/baseweb?autoReconnect=true?useTimezone=true" 
+            username="jcoli"/>
+  <Resource auth="Container" 
+            driverClassName="org.postgresql.Driver" 
+            maxActive="100" 
+            maxIdle="30" 
+            maxWait="10000" 
+            name="jdbc/ProjetoDB" 
+            password="shady55" 
+            type="javax.sql.DataSource" 
+            url="jdbc:postgresql://localhost:5432/baseweb2?autoReconnect=true?useTimezone=true" 
+            username="jcoli"/>
+</Context>

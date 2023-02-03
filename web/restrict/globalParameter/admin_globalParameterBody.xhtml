@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:sec="http://www.springframework.org/security/facelets/tags"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+    <ui:composition>
+        <f:view> <f:event type="preRenderView" listener="#{contextBean.getLocale}"/></f:view>
+
+
+        <h:form id="listParams">
+
+            <p:messages id="messagesParam" showDetail="false" autoUpdate="true"
+                        closable="true" />
+
+            <p:dataTable scrollHeight="550" scrollRows="20" scrollable="false"
+                         selection="#{globalBean.selGlobalParameter}" lazy="true"
+                         id="tableParam" paginator="true" rows="20" selectionMode="single"
+                         rowKey="#{listGlobalParameter.id}" paginatorPosition="bottom"
+                         emptyMessage="#{msg.no_data}"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         value="#{globalBean.listGlobalParameter}" var="listGlobalParameter"
+                         >
+                <p:ajax event="rowSelect"
+                        update=":listParams:gridParam, :listParams:btnParamEditar"
+                        listener="#{globalBean.onRowSelectParam}">
+                    <f:setPropertyActionListener target="#{globalBean.selGlobalParameter}"
+                                                 value="listaparam" />
+                </p:ajax>
+
+                <f:facet name="header">#{msg.params}</f:facet>
+
+                <p:column headerText="#{msg.name}" >
+                    <h:outputText value="#{listGlobalParameter.name}" />
+                </p:column>
+
+
+
+                <p:column headerText="#{msg.description}" >
+                    <h:outputText value="#{listGlobalParameter.description}" />
+                </p:column>
+
+                <p:column headerText="#{msg.type}" >
+                    <h:outputText value="#{listGlobalParameter.type}" />
+                </p:column>
+
+                <p:column headerText="#{msg.value}" >
+
+                    <h:outputText value="#{listGlobalParameter.valueBolean}" rendered ="#{listGlobalParameter.type == ('boolean')}" style="float:right" />
+                    <h:outputText value="#{listGlobalParameter.valueString}" rendered ="#{listGlobalParameter.type == ('string')}" style="float:right" />
+                    <h:outputText value="#{listGlobalParameter.valueInteger}" rendered ="#{listGlobalParameter.type == ('integer')}" style="float:right" >
+                        <f:convertNumber minFractionDigits="3" maxFractionDigits="3" locale="pt-br" />
+                    </h:outputText>    
+                    <h:outputText value="#{listGlobalParameter.valueFloat}" rendered ="#{listGlobalParameter.type == ('float')}" style="float:right" >
+                        <f:convertNumber minFractionDigits="3" maxFractionDigits="3" locale="pt-br" />
+                    </h:outputText>    
+                    <h:outputText value="#{listGlobalParameter.valueDouble}" rendered ="#{listGlobalParameter.type == ('double')}" style="float:right" >
+                        <f:convertNumber minFractionDigits="3" maxFractionDigits="3" locale="pt-br" />
+                    </h:outputText>    
+                    <h:outputText value="#{listGlobalParameter.valueTimeStamp}" rendered ="#{listGlobalParameter.type == ('timestamp')}" style="float:right" >
+                        <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
+                    </h:outputText>    
+
+                </p:column>
+
+
+            </p:dataTable>
+
+            <h:outputText value="#{globalBean.locale}" />
+
+            <p:panel header="#{msg.paramData}">
+
+
+                <h:panelGrid id="gridParam" columns="2" cellpadding="3">
+
+                    <h:outputLabel value="#{msg.paramType}" for="filparam"   />
+                    <p:selectOneMenu  id="filparam" value = "#{globalBean.globalParameter.type}" disabled="#{(!(globalBean.isbNewParam()))}" >
+                        <f:selectItem itemLabel="#{globalBean.globalParameter.type}" itemValue="#{globalBean.globalParameter.type}" />
+                        <c:if test="#{globalBean.locale.toString() == ('en_US')}" >
+                            <f:selectItem itemLabel="" itemValue="" />
+                            <f:selectItem itemLabel="Boolean" itemValue="boolean" />
+                            <f:selectItem itemLabel="String" itemValue="string" />
+                            <f:selectItem itemLabel="Integer" itemValue="integer" />
+                            <f:selectItem itemLabel="Float" itemValue="float" />
+                            <f:selectItem itemLabel="Double" itemValue="double" />
+                            <f:selectItem itemLabel="TimeStamp" itemValue="timestamp" />
+                        </c:if>
+                        <c:if test="#{globalBean.locale.toString() == ('pt_BR')}" >
+                            <f:selectItem itemLabel="Logico" itemValue="boolean" />
+                            <f:selectItem itemLabel="Texto" itemValue="string" />
+                            <f:selectItem itemLabel="Inteiro" itemValue="integer" />
+                            <f:selectItem itemLabel="Ponto Flutuante" itemValue="float" />
+                            <f:selectItem itemLabel="Duplo" itemValue="double" />
+                            <f:selectItem itemLabel="Data/hora" itemValue="timestamp" />
+                        </c:if>
+                        <c:if test="#{globalBean.locale.toString() == ('es_ES')}" >
+                            <f:selectItem itemLabel="Logico" itemValue="boolean" />
+                            <f:selectItem itemLabel="Texto" itemValue="string" />
+                            <f:selectItem itemLabel="Inteiro" itemValue="integer" />
+                            <f:selectItem itemLabel="Ponto Flutuante" itemValue="float" />
+                            <f:selectItem itemLabel="Duplo" itemValue="double" />
+                            <f:selectItem itemLabel="Data/hora" itemValue="timestamp" />
+                        </c:if>
+                        <p:ajax event="change" update="typeString, typeBoolean, typeInteger, typeDouble, typeFloat, typeTimeStamp, :listParams" listener="#{globalBean.onSelectParam}"  />
+                    </p:selectOneMenu>
+
+                    <h:outputLabel value="#{msg.name} - *" for="descShort" />
+                    <p:inputText id="descShort" label="#{msg.name}" size="30"
+                                 requiredMessage="#{msg.descRequired} " maxlength="30"
+                                 value="#{globalBean.globalParameter.name}" required="true" 
+                                 disabled="#{((globalBean.isbParamEdit()))}" />
+
+
+
+                    <h:outputLabel value="#{msg.description} - *" for="name" />
+                    <p:inputText id="name" label="#{msg.description}" size="100"
+                                 requiredMessage="#{msg.descRequired} " maxlength="100"
+                                 value="#{globalBean.globalParameter.description}" required="false" 
+                                 disabled="#{((globalBean.isbParamEdit()))}" />
+
+
+
+                    <h:outputLabel value="#{msg.type_string} - *" for="typeString" rendered="#{globalBean.globalParameter.type.equals('string')}"/>
+                    <p:inputText id="typeString" label="#{msg.type_string}" size="100" rendered ="#{globalBean.globalParameter.type.equals('string')}"
+                                 requiredMessage="#{msg.descRequired} " maxlength="100"
+                                 value="#{globalBean.globalParameter.valueString}" required="true" 
+                                 disabled="#{((globalBean.isbParamEdit()))}" />
+
+
+                    <h:outputLabel value="#{msg.type_boolean} - *" for="typeBoolean" rendered="#{globalBean.globalParameter.type.equals('boolean')}"/>
+                    <p:selectBooleanButton id="typeBoolean" value="#{globalBean.globalParameter.valueBolean}" onLabel="True" offLabel="False" style="width:60px" 
+                                           rendered="#{globalBean.globalParameter.type.equals('boolean')}" disabled="#{((globalBean.isbParamEdit()))}"/>
+
+                    <h:outputLabel value="#{msg.type_integer} - *" for="typeInteger" rendered="#{globalBean.globalParameter.type.equals('integer')}"/>
+                    <p:inputText id="typeInteger" value="#{globalBean.globalParameter.valueInteger}"  style="width:60px" 
+                                 rendered="#{globalBean.globalParameter.type.equals('integer')}" disabled="#{((globalBean.isbParamEdit()))}"
+                                    maxlength="10"
+                                 validatorMessage="erro integer">
+                        <f:convertNumber pattern="##,###,###" maxFractionDigits="0" />
+                    </p:inputText>
+
+                    <h:outputLabel value="#{msg.type_double} - *" for="typeDouble" rendered="#{globalBean.globalParameter.type.equals('double')}"/>
+                    <p:inputText id="typeDouble" value="#{globalBean.globalParameter.valueDouble}"  style="width:60px" 
+                                 rendered="#{globalBean.globalParameter.type.equals('double')}" disabled="#{((globalBean.isbParamEdit()))}"
+                                  maxlength="10" validatorMessage="erro double">
+                        <f:convertNumber pattern="##,###.###" />
+                    </p:inputText>
+
+                    <h:outputLabel value="#{msg.type_float} - *" for="typeFloat" rendered="#{globalBean.globalParameter.type.equals('float')}"/>
+                    <p:inputText id="typeFloat" value="#{globalBean.globalParameter.valueFloat}"  style="width:60px" 
+                                 rendered="#{globalBean.globalParameter.type.equals('float')}" disabled="#{((globalBean.isbParamEdit()))}"
+                                 maxlength="10" validatorMessage="erro float">
+                        <f:convertNumber pattern="##,###.###" />
+                    </p:inputText>
+                    <h:outputLabel value="#{msg.type_timestamp} - *" for="typeTimeStamp" rendered="#{globalBean.globalParameter.type.equals('timestamp')}"/>
+                    <p:calendar id="typeTimeStamp" locale="pt" showButtonPanel="true" disabled="#{((globalBean.isbParamEdit()))}"
+                                navigator="true" value="#{globalBean.globalParameter.valueTimeStamp}" rendered="#{globalBean.globalParameter.type.equals('timestamp')}"
+                                pattern="dd/MM/yyyy " />
+
+
+
+                </h:panelGrid>
+
+                <p:commandButton action="#{globalBean.paramNew}" id="btnParamNew" update="gridParam, btnParamSaveNew, btnParamEditar, btnParamNew" immediate="true"
+                                 value="#{msg.pnew}" disabled="#{((globalBean.isbNewParam()))}"/>
+
+                <p:commandButton action="#{globalBean.paramEdit()}" id="btnParamEditar" update="gridParam,   btnParamSave, btnParamNew, btnParamEditar" 
+                                 value="#{msg.edit}" disabled="#{(globalBean.isbNewParamSel())}"/>
+
+                <p:commandButton action="#{globalBean.saveParamEdit}" id="btnParamSave" update="tableParam, gridParam, btnParamSave, btnParamNew, btnParamSaveNew, btnParamEditar"
+                                 value="#{msg.saveEdit}" disabled="#{((globalBean.isbSaveEditParam()))}"/>
+
+                <p:commandButton action="#{globalBean.saveParamNew}" id="btnParamSaveNew" update="tableParam, gridParam, btnParamSaveNew, btnParamNew  "
+                                 value="#{msg.saveNew}" disabled="#{(!(globalBean.isbNewParam()))}"/>
+
+                <p:commandButton action="#{globalBean.cancel}" id="btnParamCancel" immediate="true"
+                                 value="#{msg.cancel}" />
+            </p:panel>    
+
+
+
+
+        </h:form>
+
+
+    </ui:composition>
+
+</html>
